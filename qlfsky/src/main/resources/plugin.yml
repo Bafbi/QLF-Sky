@@ -1,0 +1,4 @@
+main: fr.bafbi.qlfsky.App
+name: QLF-Sky
+version: 0.1
+api-version: 1.16
