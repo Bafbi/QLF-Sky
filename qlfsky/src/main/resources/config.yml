@@ -1,7 +1,11 @@
 mongoDB:
     connectionString:
 
+version: 0.1
+
 textComponent:
     event:
         joinLeave:
             firstConnection: '[{"text":"Premiere connection de ","color":"yellow"},{"text":"<player.name>","color":"green"},{"text":" [","color":"yellow"},{"text":"#<player.connection.rank>","color":"aqua"},{"text":"]","color":"yellow"}]'
+            connection: '[{"text":"+ ","color":"dark_green"},{"text":"<player.name>","color":"aqua"}]'
+            disconnect: '[{"text":"- ","color":"dark_green"},{"text":"<player.name>","color":"aqua"}]'

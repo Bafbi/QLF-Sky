@@ -59,4 +59,8 @@ public class App extends JavaPlugin {
     public static MongoCollection<Document> getIslandCol() {
         return islandCol;
     }
+
+    public double getServerVersion() {
+        return this.getConfig().getDouble("version", -1);
+    }
 }
