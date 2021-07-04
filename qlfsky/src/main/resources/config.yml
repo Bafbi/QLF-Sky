@@ -1,0 +1,7 @@
+mongoDB:
+    connectionString:
+
+textComponent:
+    event:
+        joinLeave:
+            firstConnection: '[{"text":"Premiere connection de ","color":"yellow"},{"text":"<player.name>","color":"green"},{"text":" [","color":"yellow"},{"text":"#<player.connection.rank>","color":"aqua"},{"text":"]","color":"yellow"}]'
