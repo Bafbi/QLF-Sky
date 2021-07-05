@@ -2,3 +2,15 @@ main: fr.bafbi.qlfsky.App
 name: QLF-Sky
 version: 0.1
 api-version: 1.16
+author: Bafbi#3144
+website: https://github.com/Bafbi
+descirption: "Plugin custom créé pour QLF-Sky (Pour tout contact avec l'equipe de developpement, mp : Bafbi#3144)"
+
+commands:
+    #DataBase relative
+    profil:
+        #aliases: []
+        description: "Affiche le profil public d'un joueur."
+        permission: profil.use
+        permission-message: Cette command n'est pas pour toi!
+        usage: "Usage: /<command> <player>"

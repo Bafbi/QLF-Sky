@@ -8,9 +8,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.bafbi.qlfsky.commands.Profil;
 import fr.bafbi.qlfsky.listeners.JoinLeaveEvent;
 
 public class App extends JavaPlugin {
@@ -42,13 +44,25 @@ public class App extends JavaPlugin {
         pluginManager.registerEvents(new JoinLeaveEvent(this), this);
         //endregion
 
-        this.getLogger().info("banane");
+        //region Tab Commands
+
+            //region /profil <pseudo>
+
+            PluginCommand profilCommand = this.getCommand("profil");
+            profilCommand.setExecutor(new Profil(this));
+            profilCommand.setTabCompleter(new Profil(this));
+
+            //endregion
+
+        //endregion
+
+        this.getLogger().info("All clear for " + this.getName());
         super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        this.getLogger().info("banane");
+        this.getLogger().info("Not cool");
         super.onDisable();
     }
 
