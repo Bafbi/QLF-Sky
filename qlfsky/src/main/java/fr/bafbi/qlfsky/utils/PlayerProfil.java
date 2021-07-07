@@ -132,6 +132,13 @@ public class PlayerProfil {
         return this.playerCol.countDocuments();
     }
 
+    public void update() {
+        
+        this.setPlaytime(this.Playtime + (Double) ((new Date().getTime() - (this.Last_Connection.after(this.Connection_Time) ? this.Last_Connection.getTime() : this.Connection_Time.getTime())) / 1000.0 / 60.0 / 60.0));
+        this.setLastConnection(new Date());
+
+    }
+
 
     private void createPlayerProfil() {
 
@@ -146,7 +153,6 @@ public class PlayerProfil {
             .append("Playtime", 0.0)
             .append("Money", (long) 100);
 
-        
         this.playerCol.insertOne(profil);
 
     }
