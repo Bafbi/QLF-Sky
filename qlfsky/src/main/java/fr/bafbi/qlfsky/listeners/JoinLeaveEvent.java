@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.utils.PlayerProfil;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class JoinLeaveEvent implements Listener {
@@ -35,43 +36,15 @@ public class JoinLeaveEvent implements Listener {
     public void onJoin(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
-        MongoCollection<Document> playerCol = App.getPlayerCol();
-        Document playerDoc = playerCol.find(Filters.eq("UUID", player.getUniqueId().toString())).first();
+        PlayerProfil playerProfil = new PlayerProfil(player);
 
-        if (playerDoc != null) {
+        if (playerProfil.getPlaytime() == 0.0) event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfil.countProfils() + 1))));
+        else event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));
 
-            event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));
+        playerProfil.setOnline(true);
+        playerProfil.setConnectionTime(new Date());
 
-            main.getLogger().info("Updating profil for " + player.getName());
-
-            playerCol.updateOne(Filters.eq("UUID", player.getUniqueId().toString()), Updates.currentDate("Connection_Time"));
-            playerCol.updateOne(Filters.eq("UUID", player.getUniqueId().toString()), Updates.set("Online", true));
-
-            List<Double> playedVersion = playerDoc.getList("Played_Server_Version", Double.class);
-
-            if (!playedVersion.contains(main.getServerVersion())) {
-
-                playerCol.updateOne(Filters.eq("UUID", player.getUniqueId().toString()), Updates.push("Played_Server_Version", main.getServerVersion()));
-
-            }
-        } 
-        else {
-
-            event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerCol.countDocuments() + 1))));
-
-            main.getLogger().info("Creating profil for " + player.getName());
-            Document profil = new Document("UUID", player.getUniqueId().toString())
-                .append("Pseudo", player.getName())
-                .append("Online", true)
-                .append("Played_Server_Version", Arrays.asList(main.getServerVersion()))
-                .append("Connection_Time", new Date())
-                .append("First_Connection", new Date())
-                .append("Last_Connection", null)
-                .append("Playtime", 0.0);
-            
-            playerCol.insertOne(profil);
-
-        } 
+        if (!playerProfil.getPlayedServerVersion().contains(main.getServerVersion())) playerProfil.addPlayedServerVersion(main.getServerVersion());  
 
     }
 
