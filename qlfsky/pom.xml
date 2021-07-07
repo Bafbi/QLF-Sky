@@ -42,7 +42,6 @@
       <version>4.3.0-beta3</version>
       <scope>compile</scope>
     </dependency>
-  
   </dependencies>
 
   <build>
@@ -55,6 +54,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgument>-XDignore.symbol.file</compilerArgument>
                 </configuration>
             </plugin>
             <plugin>

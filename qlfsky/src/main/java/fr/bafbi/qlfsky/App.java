@@ -12,20 +12,33 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.bafbi.qlfsky.commands.Menu;
 import fr.bafbi.qlfsky.commands.Profil;
+import fr.bafbi.qlfsky.configfile.GuiConfig;
 import fr.bafbi.qlfsky.listeners.JoinLeaveEvent;
 
 public class App extends JavaPlugin {
 
     private static MongoCollection<Document> islandCol;
     private static MongoCollection<Document> playerCol;
-
+    private static App plugin;
+    public GuiConfig guiConfig;
 
     @Override
     public void onEnable() {
 
+        plugin = this;
+        this.guiConfig = new GuiConfig(this);
+
         //region Save Files
         this.saveDefaultConfig();
+
+        /*File file = new File(this.getDataFolder(), "customItem.json");
+        try {
+            customItem = (JSONObject) new JSONParser().parse(new FileReader(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
         //endregion
 
         //region MongoDB
@@ -53,6 +66,13 @@ public class App extends JavaPlugin {
             profilCommand.setTabCompleter(new Profil(this));
 
             //endregion
+            //region /menu
+
+            PluginCommand menuCommand = this.getCommand("menu");
+            menuCommand.setExecutor(new Menu(this));
+            menuCommand.setTabCompleter(new Menu(this));
+
+            //endregion
 
         //endregion
 
@@ -77,4 +97,9 @@ public class App extends JavaPlugin {
     public double getServerVersion() {
         return this.getConfig().getDouble("version", -1);
     }
+
+    public static App getPlugin() {
+        return plugin;
+    }
+
 }

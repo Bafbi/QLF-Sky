@@ -14,3 +14,10 @@ commands:
         permission: profil.use
         permission-message: Cette command n'est pas pour toi!
         usage: "Usage: /<command> <player>"
+
+    menu:
+        aliases: [farm, gui]
+        description: "Affiche le menu du serveur."
+        permission: menu.use
+        permission-message: Cette command n'est pas pour toi!
+        usage: "Usage: /<command>"

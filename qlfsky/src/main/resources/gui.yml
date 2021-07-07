@@ -1,0 +1,15 @@
+create_is_gui:
+    nb_line: 1
+    items:
+        3:
+            name_id: /is_create
+            material: WHEAT_SEEDS
+            custommodeldata: 10
+            type: gui_item
+            displayname: '[{"text":"\u2b16 ","color":"yellow"},{"text":"Créer une ile","color":"green"},{"text":" \u2b17","color":"yellow"}]'
+            lore:
+                - '[{"text":"\u21d1","color":"dark_red"}]'
+                - '[{"text":"\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557","color":"dark_red"}]'
+                - '[{"text":"Clique pour créer ton ile","color":"yellow"}]'
+                - ""
+                - '[{"text":"/is create","color":"gray"}]'
