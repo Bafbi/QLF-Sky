@@ -1,14 +1,7 @@
 package fr.bafbi.qlfsky.listeners;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
-
-import org.bson.Document;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,15 +45,12 @@ public class JoinLeaveEvent implements Listener {
     public void onLeave(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-        MongoCollection<Document> playerCol = App.getPlayerCol();
-        Document playerDoc = playerCol.find(Filters.eq("UUID", player.getUniqueId().toString())).first();
-        Date connectionTime = playerDoc.getDate("Connection_Time");
+        PlayerProfil playerProfil = new PlayerProfil(player);
 
         event.quitMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("disconnect").replace("<player.name>", player.getName())));
 
-        playerCol.updateOne(Filters.eq("UUID", player.getUniqueId().toString()), Updates.currentDate("Last_Connection"));
-        playerCol.updateOne(Filters.eq("UUID", player.getUniqueId().toString()), Updates.set("Online", false));
-        playerCol.updateOne(Filters.eq("UUID", player.getUniqueId().toString()), Updates.inc("Playtime", (Double) ((new Date().getTime() - connectionTime.getTime()) / 1000.0 / 60.0 / 60.0)));
+        playerProfil.update();
+        playerProfil.setOnline(false);
 
     }
 
