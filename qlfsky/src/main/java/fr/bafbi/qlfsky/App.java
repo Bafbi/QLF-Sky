@@ -8,14 +8,18 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
+import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.bafbi.qlfsky.commands.Menu;
+import fr.bafbi.qlfsky.commands.Farm;
+import fr.bafbi.qlfsky.commands.Money;
 import fr.bafbi.qlfsky.commands.Profil;
 import fr.bafbi.qlfsky.configfile.GuiConfig;
 import fr.bafbi.qlfsky.listeners.JoinLeaveEvent;
+import fr.bafbi.qlfsky.utils.VoidChunkGenerator;
 
 public class App extends JavaPlugin {
 
@@ -68,13 +72,34 @@ public class App extends JavaPlugin {
             //endregion
             //region /menu
 
-            PluginCommand menuCommand = this.getCommand("menu");
-            menuCommand.setExecutor(new Menu(this));
-            menuCommand.setTabCompleter(new Menu(this));
+            PluginCommand farmCommand = this.getCommand("farm");
+            farmCommand.setExecutor(new Farm(this));
+            farmCommand.setTabCompleter(new Farm(this));
+
+            //endregion
+
+            //region /money
+
+            PluginCommand moneyCommand = this.getCommand("money");
+            moneyCommand.setExecutor(new Money(this));
+            moneyCommand.setTabCompleter(new Money(this));
 
             //endregion
 
         //endregion
+
+        //region Generate void World
+
+        if (Bukkit.getWorld("sky") == null) {
+
+            WorldCreator wc = new WorldCreator("sky");
+            wc.generator(new VoidChunkGenerator());
+            wc.createWorld();
+
+        }
+
+        //#endregion
+
 
         this.getLogger().info("All clear for " + this.getName());
         super.onEnable();
