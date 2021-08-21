@@ -10,13 +10,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import fr.bafbi.qlfsky.App;
-import fr.bafbi.qlfsky.utils.PlayerProfil;
+import fr.bafbi.qlfsky.utils.PlayerProfilDB;
+import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class JoinLeaveEvent implements Listener {
     
-    private App main;
-    private ConfigurationSection textComponent;
+    private final App main;
+    private final ConfigurationSection textComponent;
 
     public JoinLeaveEvent(App main) {
 
@@ -29,15 +30,17 @@ public class JoinLeaveEvent implements Listener {
     public void onJoin(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
-        PlayerProfil playerProfil = new PlayerProfil(player);
+        PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
+        PlayerProfilLocal playerProfilLocal= new PlayerProfilLocal(player);
 
-        if (playerProfil.getPlaytime() == 0.0) event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfil.countProfils() + 1))));
+        if (playerProfilDB.getPlaytime() == 0.0) event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfilDB.countProfils() + 1))));
         else event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));
 
-        playerProfil.setOnline(true);
-        playerProfil.setConnectionTime(new Date());
+        playerProfilDB.setOnline(true);
+        playerProfilDB.setConnectionTime(new Date());
+        playerProfilLocal.setMoney(playerProfilDB.getMoney());
 
-        if (!playerProfil.getPlayedServerVersion().contains(main.getServerVersion())) playerProfil.addPlayedServerVersion(main.getServerVersion());  
+        if (!playerProfilDB.getPlayedServerVersion().contains(main.getServerVersion())) playerProfilDB.addPlayedServerVersion(main.getServerVersion());  
 
     }
 
@@ -45,12 +48,14 @@ public class JoinLeaveEvent implements Listener {
     public void onLeave(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-        PlayerProfil playerProfil = new PlayerProfil(player);
+        PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
+        PlayerProfilLocal playerProfilLocal= new PlayerProfilLocal(player);
 
         event.quitMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("disconnect").replace("<player.name>", player.getName())));
 
-        playerProfil.update();
-        playerProfil.setOnline(false);
+        playerProfilDB.update();
+        playerProfilDB.setOnline(false);
+        playerProfilDB.setMoney(playerProfilLocal.getMoney());
 
     }
 

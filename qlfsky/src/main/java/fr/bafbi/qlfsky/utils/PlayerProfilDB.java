@@ -24,35 +24,36 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.format.TextColor;
 
-public class PlayerProfil {
+public class PlayerProfilDB {
 
-    private final App main = App.getPlugin();
+    private final static App main = App.getPlugin();
     private final Player player;
     private final MongoCollection<Document> playerCol = App.getPlayerCol();
     private Document playerDoc;
 
-    private final String UUID;
+    private final String Uuid;
     private String Pseudo;
-    private boolean Online;
+    private Boolean Online;
     private List<Double> Played_Server_Version;
     private final Date First_Connection;
     private Date Connection_Time;
     private Date Last_Connection;
-    private double Playtime;
-    private long Money;
+    private Double Playtime;
+    private Long Money;
+    private String IslandUUID;
 
-    public PlayerProfil(Player player) {
+    public PlayerProfilDB(Player player) {
 
         this.player = player;
 
-        this.UUID = player.getUniqueId().toString();        
+        this.Uuid = player.getUniqueId().toString();        
 
-        this.playerDoc = this.playerCol.find(Filters.eq("UUID", this.UUID)).first();
+        this.playerDoc = this.playerCol.find(Filters.eq("UUID", this.Uuid)).first();
 
         if (playerDoc == null) {
 
-            createPlayerProfil();
-            this.playerDoc = this.playerCol.find(Filters.eq("UUID", this.UUID)).first();
+            createPlayerProfilDB();
+            this.playerDoc = this.playerCol.find(Filters.eq("UUID", this.Uuid)).first();
 
         } 
 
@@ -64,15 +65,21 @@ public class PlayerProfil {
         this.Last_Connection = playerDoc.getDate("Last_Connection");
         this.Playtime = playerDoc.getDouble("Playtime");
         this.Money = playerDoc.getLong("Money");
+        if (this.Money == null) this.setMoney(0);
+        this.IslandUUID = playerDoc.getString("IslandUUID");
+        if (this.IslandUUID == null) this.setIslandUUID(null);
 
     }
 
+    public String getUUID() {
+        return this.Uuid;
+    }
 
     public String getPseudo() {
         return this.Pseudo;
     }
     public void setPseudo(String pseudo) {
-        this.playerCol.updateOne(Filters.eq("UUID", this.UUID), Updates.set("Pseudo", pseudo));
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("Pseudo", pseudo));
         this.Pseudo = pseudo;
     }
 
@@ -80,7 +87,7 @@ public class PlayerProfil {
         return this.Online;
     }
     public void setOnline(boolean online) {
-        this.playerCol.updateOne(Filters.eq("UUID", this.UUID), Updates.set("Online", online));
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("Online", online));
         this.Online = online;
     }
 
@@ -88,7 +95,7 @@ public class PlayerProfil {
         return this.Played_Server_Version;
     }
     public void addPlayedServerVersion(double serverVersion) {
-        this.playerCol.updateOne(Filters.eq("UUID", this.UUID), Updates.push("Played_Server_Version", serverVersion));
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.push("Played_Server_Version", serverVersion));
         this.Played_Server_Version.add(serverVersion);
     }
 
@@ -100,7 +107,7 @@ public class PlayerProfil {
         return this.Connection_Time;
     }
     public void setConnectionTime(Date connectionTime) {
-        this.playerCol.updateOne(Filters.eq("UUID", this.UUID), Updates.set("Connection_Time", connectionTime));
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("Connection_Time", connectionTime));
         this.Connection_Time = connectionTime;
     }
 
@@ -108,7 +115,7 @@ public class PlayerProfil {
         return this.Last_Connection;
     }
     public void setLastConnection(Date lastConnection) {
-        this.playerCol.updateOne(Filters.eq("UUID", this.UUID), Updates.set("Last_Connection", lastConnection));
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("Last_Connection", lastConnection));
         this.Last_Connection = lastConnection;
     }
 
@@ -116,7 +123,7 @@ public class PlayerProfil {
         return this.Playtime;
     }
     public void setPlaytime(double playtime) {
-        this.playerCol.updateOne(Filters.eq("UUID", this.UUID), Updates.set("Playtime", playtime));
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("Playtime", playtime));
         this.Playtime = playtime;
     }
 
@@ -124,8 +131,15 @@ public class PlayerProfil {
         return this.Money;
     }
     public void setMoney(long money) {
-        this.playerCol.updateOne(Filters.eq("UUID", this.UUID), Updates.set("Money", money));
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("Money", money));
         this.Money = money;
+    }
+    public String getIslandUUID() {
+        return this.IslandUUID;
+    }
+    public void setIslandUUID(String islandUUID) {
+        this.playerCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("IslandUUID", islandUUID));
+        this.IslandUUID = islandUUID;
     }
 
     public long countProfils() {
@@ -140,7 +154,7 @@ public class PlayerProfil {
     }
 
 
-    private void createPlayerProfil() {
+    private void createPlayerProfilDB() {
 
         main.getLogger().info("Creating profil for " + player.getName());
         Document profil = new Document("UUID", player.getUniqueId().toString())
@@ -151,7 +165,8 @@ public class PlayerProfil {
             .append("First_Connection", new Date())
             .append("Last_Connection", new Date())
             .append("Playtime", 0.0)
-            .append("Money", (long) 100);
+            .append("Money", (long) 0)
+            .append("IslandUUID", null);
 
         this.playerCol.insertOne(profil);
 

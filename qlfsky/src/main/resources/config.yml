@@ -2,6 +2,9 @@ mongoDB:
     connectionString:
 
 version: 0.1
+currency: 
+    name: Royalties
+    displayName: ♛
 
 textComponent:
     event:
@@ -9,3 +12,6 @@ textComponent:
             firstConnection: '[{"text":"Premiere connection de ","color":"yellow"},{"text":"<player.name>","color":"green"},{"text":" [","color":"yellow"},{"text":"#<player.connection.rank>","color":"aqua"},{"text":"]","color":"yellow"}]'
             connection: '[{"text":"+ ","color":"dark_green"},{"text":"<player.name>","color":"aqua"}]'
             disconnect: '[{"text":"- ","color":"dark_green"},{"text":"<player.name>","color":"aqua"}]'
+    command:
+        money:
+            getBalance: '[{"text":"Tu as ","color":"yellow"},{"text":"<data.money> ","color":"gold"},{"text":"<config.currency.displayName>","color":"aqua"}]'

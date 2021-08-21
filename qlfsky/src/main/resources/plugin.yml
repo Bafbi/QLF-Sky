@@ -7,17 +7,24 @@ website: https://github.com/Bafbi
 descirption: "Plugin custom créé pour QLF-Sky (Pour tout contact avec l'equipe de developpement, mp : Bafbi#3144)"
 
 commands:
-    #DataBase relative
+    #DataBase / Local relative
     profil:
         #aliases: []
         description: "Affiche le profil public d'un joueur."
         permission: profil.use
         permission-message: Cette command n'est pas pour toi!
-        usage: "Usage: /<command> <player>"
+        usage: "§e§oUsage: /<command> <player>"
 
-    menu:
-        aliases: [farm, gui]
+    money:
+        aliases: [balance, argent]
+        description: "Affiche le profil public d'un joueur."
+        permission: profil.use
+        permission-message: Cette command n'est pas pour toi!
+        usage: "§e§oUsage: /<command>"
+
+    farm:
+        aliases: [menu, gui]
         description: "Affiche le menu du serveur."
         permission: menu.use
         permission-message: Cette command n'est pas pour toi!
-        usage: "Usage: /<command>"
+        usage: "§e§oUsage: /<command>"

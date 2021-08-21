@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import fr.bafbi.qlfsky.App;
-import fr.bafbi.qlfsky.utils.PlayerProfil;
+import fr.bafbi.qlfsky.utils.PlayerProfilDB;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -47,7 +47,7 @@ public class Profil implements TabExecutor {
 
             if (target == null) return false;
             
-            Book profilBook = PlayerProfil.getProfilBook(target);
+            Book profilBook = PlayerProfilDB.getProfilBook(target);
 
             if (profilBook == null) {
 

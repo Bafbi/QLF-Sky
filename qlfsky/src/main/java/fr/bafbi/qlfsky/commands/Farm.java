@@ -3,6 +3,7 @@ package fr.bafbi.qlfsky.commands;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,12 +16,14 @@ import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
 
 import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.utils.IslandProfilDB;
+import fr.bafbi.qlfsky.utils.PlayerProfilDB;
 
-public class Menu implements TabExecutor {
+public class Farm implements TabExecutor {
 
     private App main;
 
-    public Menu(App main) {
+    public Farm(App main) {
 
         this.main = main;
 
@@ -40,6 +43,42 @@ public class Menu implements TabExecutor {
         if (sender instanceof Player) {
 
             Player player = (Player) sender;
+            PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
+
+            if (playerProfilDB.getIslandUUID() == null) {
+               IslandProfilDB.createNewIslandProfil(player, player.getName() + "_Is"); 
+               player.sendTitle("Creating you a new island", "", 15, 30, 15);
+               return true;
+            } 
+
+            IslandProfilDB islandProfilDB = new IslandProfilDB(playerProfilDB.getIslandUUID());
+
+            if (args.length < 1) return false;
+
+            switch (args[0]) {
+                case "create":
+
+                    if (playerProfilDB.getIslandUUID() == null) IslandProfilDB.createNewIslandProfil(player, args[1]);
+                    else player.sendTitle("You already have an island", "", 15, 30, 15);
+                    
+                    break;
+                case "home":
+
+                    List<Double> position = islandProfilDB.getHomePosition();
+                    Location location = new Location(Bukkit.getWorld("sky"), position.get(0), position.get(1), position.get(2));
+                    player.teleport(location);
+                
+                    break;
+                case "sah":
+
+                
+                
+                    break;
+                default:
+                    break;
+            }
+
+            
 
             /*JSONObject customItemPart = (JSONObject) main.getCustomItemJSON().get("GUI");
             main.getLogger().info(customItemPart.toJSONString());
