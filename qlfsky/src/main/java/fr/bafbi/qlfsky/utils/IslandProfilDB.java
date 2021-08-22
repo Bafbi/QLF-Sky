@@ -11,9 +11,13 @@ import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import fr.bafbi.qlfsky.App;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class IslandProfilDB {
 
@@ -29,6 +33,7 @@ public class IslandProfilDB {
     private List<Double> HomePosition;
     private List<String> MembersUUID;
     private List<String> MembersPseudo;
+    private Boolean Deleted;
 
     public IslandProfilDB(String islandUuid) {
 
@@ -43,8 +48,13 @@ public class IslandProfilDB {
         this.HomePosition = islandDoc.getList("HomePosition", Double.class);
         this.MembersUUID = islandDoc.getList("MembersUUID", String.class);
         this.MembersPseudo = islandDoc.getList("MembersPseudo", String.class);
-
+        this.Deleted = islandDoc.getBoolean("Deleted");
+        
     }
+    public String getUUID() {
+        return Uuid;
+    }
+
     public String getName() {
         return Name;
     }
@@ -105,15 +115,22 @@ public class IslandProfilDB {
         return MembersPseudo;
     }
 
+    public void setDeleted(Boolean deleted) {
+        this.islandCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("Deleted", deleted));
+        this.Deleted = deleted;
+    }
 
+    public Boolean getDeleted() {
+        return Deleted;
+    }
 
     
 
     public static void createNewIslandProfil(Player player, String islandName) {
 
         MongoCollection<Document> islandCol = App.getIslandCol();
-        Long countDoc = islandCol.countDocuments() + 200;
-        List<Double> positionXZ = List.of(countDoc * Math.sin(countDoc), 60.0, countDoc * Math.cos(countDoc));
+        Long countDoc = islandCol.countDocuments() + 5;
+        List<Double> positionXZ = List.of( 200 * countDoc * Math.sin(countDoc * 20), 200 * countDoc * Math.cos(countDoc * 20));
         String leaderUuid = player.getUniqueId().toString();
         UUID newUuid = null;
         boolean duplicate = true;
@@ -134,9 +151,28 @@ public class IslandProfilDB {
             .append("Position", positionXZ)
             .append("HomePosition", positionXZ)
             .append("MembersUUID", Arrays.asList(leaderUuid))
-            .append("MembersName", Arrays.asList(player.getName()));
+            .append("MembersName", Arrays.asList(player.getName()))
+            .append("Deleted", false);
 
         islandCol.insertOne(profil);
+
+        Location loc = new Location(Bukkit.getWorld("sky"), positionXZ.get(0), 80, positionXZ.get(2));
+        loc.getBlock().setType(Material.GRASS_BLOCK);
+
+    }
+
+    public void deleteIslandProfil() {
+
+        setDeleted(true);
+
+        for (String memberUUID : MembersUUID) {
+
+            PlayerProfilDB playerProfilDB = new PlayerProfilDB(Bukkit.getPlayer(UUID.fromString(memberUUID)));
+            playerProfilDB.setIslandUUID(null);
+            Bukkit.getPlayer(UUID.fromString(memberUUID)).sendMessage(Component.text("Your Island has just been deleted").color(NamedTextColor.RED));
+
+        }
+        
 
     }
     

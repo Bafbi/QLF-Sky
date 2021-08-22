@@ -23,7 +23,7 @@ commands:
         usage: "§e§oUsage: /<command>"
 
     farm:
-        aliases: [menu, gui]
+        aliases: [is, island]
         description: "Affiche le menu du serveur."
         permission: menu.use
         permission-message: Cette command n'est pas pour toi!

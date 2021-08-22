@@ -18,6 +18,9 @@ import org.json.simple.JSONObject;
 import fr.bafbi.qlfsky.App;
 import fr.bafbi.qlfsky.utils.IslandProfilDB;
 import fr.bafbi.qlfsky.utils.PlayerProfilDB;
+import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class Farm implements TabExecutor {
 
@@ -46,35 +49,59 @@ public class Farm implements TabExecutor {
             PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
 
             if (playerProfilDB.getIslandUUID() == null) {
-               IslandProfilDB.createNewIslandProfil(player, player.getName() + "_Is"); 
-               player.sendTitle("Creating you a new island", "", 15, 30, 15);
-               return true;
-            } 
+                if (args.length > 0 && args[0].equalsIgnoreCase("create")) {
+                    String islandName;
+                    if (args.length > 1) {
+                        islandName = args[1];
+                    } else {
+                        islandName = player.getName() + "_Is"; 
+                    }
+                    IslandProfilDB.createNewIslandProfil(player, islandName);
+                    player.sendTitle("Creating you a new island", ". . . " + islandName, 5, 20, 10);
+                    Bukkit.dispatchCommand(player, "farm home");
+                    return true;
+                }
+                player.sendMessage(Component.text("You need create an island [/farm create {name of the farm}]").color(NamedTextColor.YELLOW));
+                return false;
+            }
 
             IslandProfilDB islandProfilDB = new IslandProfilDB(playerProfilDB.getIslandUUID());
+            PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
 
             if (args.length < 1) return false;
 
             switch (args[0]) {
                 case "create":
 
-                    if (playerProfilDB.getIslandUUID() == null) IslandProfilDB.createNewIslandProfil(player, args[1]);
-                    else player.sendTitle("You already have an island", "", 15, 30, 15);
+                    player.sendMessage(Component.text("You already have an island").color(NamedTextColor.YELLOW));
                     
                     break;
                 case "home":
 
                     List<Double> position = islandProfilDB.getHomePosition();
                     Location location = new Location(Bukkit.getWorld("sky"), position.get(0), position.get(1), position.get(2));
+
+                    playerProfilLocal.setLocationUUID(islandProfilDB.getUUID());
+
                     player.teleport(location);
                 
                     break;
-                case "sah":
+                case "delete":
 
-                
+                    islandProfilDB.deleteIslandProfil();
                 
                     break;
-                default:
+                case "sethome":
+
+                    if (!playerProfilLocal.getLocationUUID().equals(playerProfilDB.getIslandUUID())) {
+                        player.sendMessage(Component.text("You need to be in your island").color(NamedTextColor.YELLOW));
+                        return true;
+                    }
+                    Location playerLocation = player.getLocation();
+                        islandProfilDB.setHomePosition(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
+
+                    break;
+                default:    
                     break;
             }
 
