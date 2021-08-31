@@ -2,16 +2,45 @@ mongoDB:
     connectionString:
 
 version: 0.1
+spawn : [0.0, 180.0, 0.0]
+skyWorldName : "sky"
 currency: 
-    name: Royalties
-    displayName: ♛
+    name: ManaCoin
+    displayName: ⛂
+
+defaultGuard:
+    block:
+        place: 5
+        destroy: 5
 
 textComponent:
     event:
         joinLeave:
             firstConnection: '[{"text":"Premiere connection de ","color":"yellow"},{"text":"<player.name>","color":"green"},{"text":" [","color":"yellow"},{"text":"#<player.connection.rank>","color":"aqua"},{"text":"]","color":"yellow"}]'
             connection: '[{"text":"+ ","color":"dark_green"},{"text":"<player.name>","color":"aqua"}]'
-            disconnect: '[{"text":"- ","color":"dark_green"},{"text":"<player.name>","color":"aqua"}]'
+            disconnect: '[{"text":"- ","color":"dark_red"},{"text":"<player.name>","color":"aqua"}]'
+        guard:
     command:
         money:
-            getBalance: '[{"text":"Tu as ","color":"yellow"},{"text":"<data.money> ","color":"gold"},{"text":"<config.currency.displayName>","color":"aqua"}]'
+            getBalance: '[{"text":"\u26c3 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"Vous avez ","color":"gray","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"<data.money> ","color":"gold","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"<config.currency.displayName> ","color":"aqua","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/money"}}]'
+        spawn:
+            teleported: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/spawn"}},{"text":"Vous vennez d′être teleporté au spawn ","color":"gray","clickEvent":{"action":"suggest_command","value":"/spawn"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/spawn"}}]'
+        farm: 
+            invite:
+                invitation: '[{"text":"\u2554\u2550\u2563Vous avez 30s avant que l\u2032invitation expire\u2560\u2550\u2557","color":"yellow"},{"text":"\n"},{"text":"\u2709 ","color":"yellow"},{"text":"<player.name> vous invite à rejoindre l\u2032ile : <island.name>","color":"gray"},{"text":"\n"},{"text":"\u255a\u2550\u2550\u2550\u2550\u2550","color":"yellow"},{"text":"[","color":"dark_green","clickEvent":{"action":"run_command","value":"/farm join"},"hoverEvent":{"action":"show_text","contents":{"text":"/farm join","color":"dark_gray"}}},{"text":"Accepter","color":"green","clickEvent":{"action":"run_command","value":"/farm join"},"hoverEvent":{"action":"show_text","contents":{"text":"/farm join","color":"dark_gray"}}},{"text":"]","color":"dark_green","clickEvent":{"action":"run_command","value":"/farm join"},"hoverEvent":{"action":"show_text","contents":{"text":"/farm join","color":"dark_gray"}}},{"text":"\u2550\u2550\u2550\u2550\u2550\u2550","color":"yellow"},{"text":"[","color":"dark_red","clickEvent":{"action":"run_command","value":"/farm reject"},"hoverEvent":{"action":"show_text","contents":{"text":"/farm reject","color":"dark_gray"}}},{"text":"Refuser","color":"red","clickEvent":{"action":"run_command","value":"/farm reject"},"hoverEvent":{"action":"show_text","contents":{"text":"/farm reject","color":"dark_gray"}}},{"text":"]","color":"dark_red","clickEvent":{"action":"run_command","value":"/farm reject"},"hoverEvent":{"action":"show_text","contents":{"text":"/farm reject","color":"dark_gray"}}},{"text":"\u2550\u2550\u2550\u2550\u2550\u2550","color":"yellow"}]'
+                broadcastInvite: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"run_command","value":"/farm cancelInvite <invitedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour l\u2032annuler","color":"dark_gray"}}},{"text":"<player.name> vient d\u2032inviter <invitedPlayer.name> sur l\u2032ile ","color":"gray","clickEvent":{"action":"run_command","value":"/farm cancelInvite <invitedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour l\u2032annuler","color":"dark_gray"}}},{"text":"|","color":"yellow","clickEvent":{"action":"run_command","value":"/farm cancelInvite <invitedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour l\u2032annuler","color":"dark_gray"}}}]'
+                error:
+                    missingSecondArg: '[{"text":"\u270e | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"/farm invite {Pseudo} ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}}]'
+                    missingPlayer: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"Le joueur indiqué n\u2032existe pas ou n\u2032est pas present ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}}]'
+                    selfInvite: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"Vous ne pouvez pas vous inviter vous même ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}}]'
+                    haveIsland: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"Le Joueur indiqué à déjà une ile ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}}]'
+                    haveInvite: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"Le Joueur indiqué est déjà invité sur une ile ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm invite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm invite"}}]'
+                exiredInvitation: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/farm create"}},{"text":"L′invitation de <player.name> vient d′expirer ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm create"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/farm create"}}]'
+                selfExiredInvitation: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"run_command","value":"/farm invite <player.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquer pour la renvoyer","color":"dark_gray"}}},{"text":"Votre invitation vient d′expirer ","color":"gray","clickEvent":{"action":"run_command","value":"/farm invite <player.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquer pour la renvoyer","color":"dark_gray"}}},{"text":"|","color":"yellow","clickEvent":{"action":"run_command","value":"/farm invite <player.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour la renvoyer","color":"dark_gray"}}}]'
+            cancelInvite: 
+                error:
+                    missingSecondArg: '[{"text":"\u270e | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"/farm cancelInvite {Pseudo} ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}}]'
+                    missingPlayer: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"Le joueur indiqué n\u2032existe pas ou n\u2032est pas present ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}}]'
+                    notInvited: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"<selectedPlayer.name> n\u2032a pas d\u2032invite de votre island ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}}]'
+                invitationCancel: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/farm create"}},{"text":"<player.name> vient d\u2032annuler l\u2032invitation ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm create"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/farm create"}}]'
+                invitationCancelBroadcast: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"run_command","value":"/farm invite <selectedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour la renvoyer","color":"gray"}}},{"text":"L\u2032invitation à <selectedPlayer.name> vient d\u2032être annulé par <player.name> ","color":"gray","clickEvent":{"action":"run_command","value":"/farm invite <selectedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour la renvoyer","color":"gray"}}},{"text":"|","color":"yellow","clickEvent":{"action":"run_command","value":"/farm invite <selectedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour la renvoyer","color":"gray"}}}]'

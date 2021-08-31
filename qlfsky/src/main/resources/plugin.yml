@@ -25,6 +25,14 @@ commands:
     farm:
         aliases: [is, island]
         description: "Affiche le menu du serveur."
-        permission: menu.use
+        permission: farm.use
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
+
+    spawn:
+        aliases: [is, island]
+        description: "Teleport au spawn."
+        permission: spawn.use
+        permission-message: Cette command n'est pas pour toi!
+        usage: "§e§oUsage: /<command>"
+

@@ -17,7 +17,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import fr.bafbi.qlfsky.commands.Farm;
 import fr.bafbi.qlfsky.commands.Money;
 import fr.bafbi.qlfsky.commands.Profil;
+import fr.bafbi.qlfsky.commands.Spawn;
 import fr.bafbi.qlfsky.configfile.GuiConfig;
+import fr.bafbi.qlfsky.listeners.GuardEvent;
 import fr.bafbi.qlfsky.listeners.JoinLeaveEvent;
 import fr.bafbi.qlfsky.utils.VoidChunkGenerator;
 
@@ -46,7 +48,7 @@ public class App extends JavaPlugin {
         //endregion
 
         //region MongoDB
-        ConnectionString connectionString = new ConnectionString(this.getConfig().getString("mongoDB.connectionString"));
+        ConnectionString connectionString = new ConnectionString("mongodb+srv://Bafbi:xBAvb4qV*$VkCvC@skyrun.qzl6x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"/*this.getConfig().getString("mongoDB.connectionString")*/);
         MongoClientSettings settings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
             .build();
@@ -59,6 +61,7 @@ public class App extends JavaPlugin {
         //region Listeners
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new JoinLeaveEvent(this), this);
+        pluginManager.registerEvents(new GuardEvent(this), this);
         //endregion
 
         //region Tab Commands
@@ -85,6 +88,12 @@ public class App extends JavaPlugin {
             moneyCommand.setTabCompleter(new Money(this));
 
             //endregion
+
+            //#region /spawn
+
+            this.getCommand("spawn").setExecutor(new Spawn(this));
+
+            //#endregion
 
         //endregion
 

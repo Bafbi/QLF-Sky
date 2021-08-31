@@ -1,5 +1,6 @@
 package fr.bafbi.qlfsky.utils;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.NamespacedKey;
@@ -18,10 +19,12 @@ public class PlayerProfilLocal {
     private final NamespacedKey moneyKey = new NamespacedKey(main, "Money");
     private final NamespacedKey modificationPermissionKey = new NamespacedKey(main, "ModificationPermission");
     private final NamespacedKey locationUUIDKey = new NamespacedKey(main, "LocationUUID");
+    private final NamespacedKey islandInviteUUIDKey = new NamespacedKey(main, "IslandInviteUUID");
 
     private Long money;
     private Integer modificationPermission;
     private String locationUUID;
+    private String islandInviteUUID;
     
     public PlayerProfilLocal(Player player) {
 
@@ -36,7 +39,10 @@ public class PlayerProfilLocal {
         if (this.modificationPermission == null) this.setModificationPermission(0);
 
         this.locationUUID = this.data.get(locationUUIDKey, PersistentDataType.STRING);
-        if (this.locationUUID == null) this.setLocationUUID("null");
+        if (this.locationUUID == null) this.setLocationUUID("spawn");
+
+        this.islandInviteUUID = this.data.get(islandInviteUUIDKey, PersistentDataType.STRING);
+        if (this.islandInviteUUID == null) this.setIslandInviteUUID("null");
 
     }
 
@@ -63,6 +69,14 @@ public class PlayerProfilLocal {
     public void setLocationUUID(String locationUUID) {
         this.data.set(this.locationUUIDKey, PersistentDataType.STRING, locationUUID);
         this.locationUUID = locationUUID;
+    }
+
+    public String getIslandInviteUUID() {
+        return this.islandInviteUUID;
+    }
+    public void setIslandInviteUUID(String islandInviteUUID) {
+        this.data.set(this.islandInviteUUIDKey, PersistentDataType.STRING, islandInviteUUID);
+        this.islandInviteUUID= islandInviteUUID;
     }
     
 }
