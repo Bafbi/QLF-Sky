@@ -42,11 +42,13 @@ public class IslandProfilDB {
     private Map<String, Integer> Permissions_Level;
     private Boolean Deleted;
 
-    public IslandProfilDB(String islandUuid) {
+    public IslandProfilDB(String islandUuid) throws Error {
 
         this.Uuid = islandUuid;
 
         this.islandDoc = islandCol.find(Filters.eq("UUID", this.Uuid)).first();
+
+        if (this.islandDoc == null) throw new Error("Invalid islandUuid");
 
         this.Name = islandDoc.getString("Name");
         this.LeaderUUID = islandDoc.getString("LeaderUUID");
@@ -57,7 +59,7 @@ public class IslandProfilDB {
         this.MembersPseudo = islandDoc.getList("MembersPseudo", String.class);
         try {
             this.PlayersUUID_PermissionLevel = (Map<String, Integer>) islandDoc.get("PlayersUUID_PermissionLevel", Map.class);
-            this.Permissions_Level = (Map<String, Integer>) islandDoc.get("Permission_Level", Map.class);
+            this.Permissions_Level = (Map<String, Integer>) islandDoc.get("Permissions_Level", Map.class);
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -252,8 +254,8 @@ public class IslandProfilDB {
             .append("HomePosition", positionXZ)
             .append("MembersUUID", Arrays.asList(leaderUuid))
             .append("MembersPseudo", Arrays.asList(player.getName()))
-            .append("PlayersUUID_PermissionLevel", getDefaultGuard())
-            .append("Permissions_Level", Map.of("thing", 8))
+            .append("PlayersUUID_PermissionLevel", Map.of(leaderUuid, 8))
+            .append("Permissions_Level", getDefaultGuard())
             .append("Deleted", false);
 
         islandCol.insertOne(profil);
@@ -266,14 +268,16 @@ public class IslandProfilDB {
     private static Map<String, Integer> getDefaultGuard() {
         ConfigurationSection config = main.getConfig().getConfigurationSection("defaultGuard");
         Map<String, Integer> defaultGuard = new HashMap<>();
-        String guardKey;
+        String guardKey1;
+        //main.getLogger().info(config.getKeys(false).toString());
         for (String section1 : config.getKeys(false)) {
-            guardKey = section1;
+            guardKey1 = section1;
+            //main.getLogger().info(section1);
             ConfigurationSection config2 = config.getConfigurationSection(section1);
             for (String section2 : config2.getKeys(false)) {
-                guardKey = guardKey + "." + section2;
-                defaultGuard.put(guardKey, config.getInt(guardKey));
-                main.getLogger().info(guardKey);
+                String guardKey2 = guardKey1 + "." + section2;
+                defaultGuard.put(guardKey2, config.getInt(guardKey2));
+                //main.getLogger().info(guardKey2);
             }
         }
 
@@ -289,7 +293,6 @@ public class IslandProfilDB {
             Player member = Bukkit.getPlayer(UUID.fromString(memberUUID));
             PlayerProfilDB playerProfilDB = new PlayerProfilDB(member);
             playerProfilDB.setIslandUUID(null);
-            member.sendMessage(Component.text("Your Island has just been deleted").color(NamedTextColor.RED));
 
         }
         

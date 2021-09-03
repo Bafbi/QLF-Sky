@@ -2,6 +2,7 @@ package fr.bafbi.qlfsky.listeners;
 
 import java.util.Date;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,10 @@ public class JoinLeaveEvent implements Listener {
         PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
         PlayerProfilLocal playerProfilLocal= new PlayerProfilLocal(player);
 
-        if (playerProfilDB.getPlaytime() == 0.0) event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfilDB.countProfils() + 1))));
+        if (playerProfilDB.getPlaytime() == 0.0) {
+            event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfilDB.countProfils() + 1))));
+            Bukkit.dispatchCommand(player, "spawn");
+        }
         else event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));
 
         playerProfilDB.setOnline(true);

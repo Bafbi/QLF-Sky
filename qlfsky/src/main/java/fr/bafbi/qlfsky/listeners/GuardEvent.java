@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -13,6 +14,7 @@ import fr.bafbi.qlfsky.utils.IslandProfilDB;
 import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class GuardEvent implements Listener{
 
@@ -39,7 +41,25 @@ public class GuardEvent implements Listener{
 
         if (playerPermissionLevel < islandPermissionLevel) {
             event.setCancelled(true);
-            player.sendMessage(Component.text("Your Island has just been deleted").color(NamedTextColor.RED));
+            player.sendActionBar(GsonComponentSerializer.gson().deserialize(textComponent.getString("notPermit")));
+        }
+
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        
+        Player player = event.getPlayer();
+        PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
+
+        IslandProfilDB currentIslandProfilDB = new IslandProfilDB(playerProfilLocal.getLocationUUID());
+
+        Integer playerPermissionLevel = currentIslandProfilDB.getPermissionLevelOfPlayer(player);
+        Integer islandPermissionLevel = currentIslandProfilDB.getLevelOfPermission("block.break");
+
+        if (playerPermissionLevel < islandPermissionLevel) {
+            event.setCancelled(true);
+            player.sendActionBar(GsonComponentSerializer.gson().deserialize(textComponent.getString("notPermit")));
         }
 
     }

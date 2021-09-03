@@ -11,7 +11,11 @@ currency:
 defaultGuard:
     block:
         place: 5
-        destroy: 5
+        break: 5
+    entity:
+        attack : 5
+    util:
+        fly : 4
 
 textComponent:
     event:
@@ -20,6 +24,7 @@ textComponent:
             connection: '[{"text":"+ ","color":"dark_green"},{"text":"<player.name>","color":"aqua"}]'
             disconnect: '[{"text":"- ","color":"dark_red"},{"text":"<player.name>","color":"aqua"}]'
         guard:
+            notPermit: '[{"text":"\u26a0 | ","color":"red"},{"text":"Vous n\u2032avez pas la permission de faire cette action ","color":"gray"},{"text":"| \u26a0","color":"red"}]'
     command:
         money:
             getBalance: '[{"text":"\u26c3 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"Vous avez ","color":"gray","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"<data.money> ","color":"gold","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"<config.currency.displayName> ","color":"aqua","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/money"}}]'

@@ -121,37 +121,39 @@ public class Farm implements TabExecutor {
 
             switch (args[0]) {
                 case "create":
-
-                    if (playerProfilDB.getIslandUUID() != null) {
-                        player.sendMessage(Component.text("You already have an island").color(NamedTextColor.YELLOW));
-                        return true;
+                    {
+                        if (playerProfilDB.getIslandUUID() != null) {
+                            player.sendMessage(Component.text("You already have an island").color(NamedTextColor.YELLOW));
+                            return true;
+                        }
                     }
-
                     break;
                 case "home":
+                    {
+                        List<Double> position = islandProfilDB.getHomePosition();
+                        Location location = new Location(Bukkit.getWorld("sky"), position.get(0), position.get(1), position.get(2));
 
-                    List<Double> position = islandProfilDB.getHomePosition();
-                    Location location = new Location(Bukkit.getWorld("sky"), position.get(0), position.get(1), position.get(2));
+                        playerProfilLocal.setLocationUUID(islandProfilDB.getUUID());
 
-                    playerProfilLocal.setLocationUUID(islandProfilDB.getUUID());
-
-                    player.teleport(location);
-                
+                        player.teleport(location);
+                    }
                     break;
                 case "delete":
-
-                    islandProfilDB.deleteIslandProfil();
-                
+                    {
+                        islandProfilDB.deleteIslandProfil();
+                        islandProfilDB.broadcast(Component.text("Your Island has just been deleted").color(NamedTextColor.RED));
+                    }
                     break;
                 case "sethome":
+                    {
+                        if (!playerProfilLocal.getLocationUUID().equals(playerProfilDB.getIslandUUID())) {
+                            player.sendMessage(Component.text("You need to be in your island").color(NamedTextColor.YELLOW));
+                            return true;
+                        }
 
-                    if (!playerProfilLocal.getLocationUUID().equals(playerProfilDB.getIslandUUID())) {
-                        player.sendMessage(Component.text("You need to be in your island").color(NamedTextColor.YELLOW));
-                        return true;
-                    }
-                    Location playerLocation = player.getLocation();
+                        Location playerLocation = player.getLocation();
                         islandProfilDB.setHomePosition(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
-
+                    }
                     break;
                 case "invite":
                     {
@@ -217,12 +219,12 @@ public class Farm implements TabExecutor {
                     }
                     break;
                 case "join":
-
-                if (playerProfilDB.getIslandUUID() != null) {
-                    player.sendMessage(Component.text("You already have an island").color(NamedTextColor.YELLOW));
-                    return true;
-                }
-                
+                    {
+                        if (playerProfilDB.getIslandUUID() != null) {
+                            player.sendMessage(Component.text("You already have an island").color(NamedTextColor.YELLOW));
+                            return true;
+                        }
+                    }
                     break;
                 case "perm":
                     {
@@ -260,6 +262,33 @@ public class Farm implements TabExecutor {
                         Bukkit.dispatchCommand(player, "spawn");
                     }
                     break;
+                case "tp":
+                    {
+                        if (args.length < 2) {
+                            return false;
+                        }
+
+                        Player playerSelected = Bukkit.getPlayer(args[1]);
+                        if (playerSelected == null) {
+                            player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("cancelInvite.error.missingPlayer")));
+                            return true;
+                        }
+
+                        PlayerProfilDB playerSelectedProfilDB = new PlayerProfilDB(playerSelected);
+                        String islandSelectedUUID = playerSelectedProfilDB.getIslandUUID();
+                        if (islandSelectedUUID == null) {
+                            player.sendMessage(Component.text("Le joueur indiqué n'as pas d'ile").color(NamedTextColor.YELLOW));
+                            return true;
+                        }
+
+                        IslandProfilDB islandSelectedProfilDB = new IslandProfilDB(islandSelectedUUID);
+                        List<Double> position = islandSelectedProfilDB.getHomePosition();
+                        Location location = new Location(Bukkit.getWorld("sky"), position.get(0), position.get(1), position.get(2));
+
+                        playerProfilLocal.setLocationUUID(islandSelectedUUID);
+
+                        player.teleport(location);
+                    }
                 default: 
               
                     break;
