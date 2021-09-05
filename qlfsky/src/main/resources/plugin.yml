@@ -2,6 +2,7 @@ main: fr.bafbi.qlfsky.App
 name: QLF-Sky
 version: 0.1
 api-version: 1.16
+database: true
 author: Bafbi#3144
 website: https://github.com/Bafbi
 descirption: "Plugin custom créé pour QLF-Sky (Pour tout contact avec l'equipe de developpement, mp : Bafbi#3144)"
@@ -11,28 +12,70 @@ commands:
     profil:
         #aliases: []
         description: "Affiche le profil public d'un joueur."
-        permission: profil.use
+        permission: qlf-sky.profil
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command> <player>"
 
     money:
         aliases: [balance, argent]
         description: "Affiche le profil public d'un joueur."
-        permission: profil.use
+        permission: qlf-sky.money
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
 
     farm:
         aliases: [is, island]
         description: "Affiche le menu du serveur."
-        permission: farm.use
+        permission: qlf-sky.farm
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
 
     spawn:
-        aliases: [is, island]
+        aliases: []
         description: "Teleport au spawn."
-        permission: spawn.use
+        permission: qlf-sky.spawn
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
+
+    fly:
+        aliases: []
+        description: "permet au joueur de voler librement"
+        permission: qlf-sky.fly
+        permission-message: Cette command n'est pas pour toi!
+        usage: "§e§oUsage: /<command>"
+
+permissions:
+    qlf-sky.*:
+        description: Donne accès à toute les commands de qlf-sky
+        default: op
+        children:
+            qlf-sky.profil: true
+            qlf-sky.money: true
+            qlf-sky.farm: true
+            qlf-sky.spawn: true
+    qlf-sky.spawn:
+        description: Donne l'accès de ce téléporter au spawn
+    qlf-sky.money:
+        description: Donne l'accès à utiliser l'économie 
+        children: 
+            qlf-sky.money.pay: true
+            qlf-sky.money.bal: true
+            qlf-sky.money.baltop: true
+    qlf-sky.money.admin:
+        description: Donne accès à utiliser l'économie de façon admin
+        children:
+            qlf-sky.money: true
+    qlf-sky.farm:
+        description: Donne accès à utilisé les iles
+        children:
+            qlf-sky.farm.sethome: true
+            qlf-sky.farm.home: true
+            qlf-sky.farm.invite: true
+            qlf-sky.farm.join: true
+            qlf-sky.farm.reject: true
+            qlf-sky.farm.create: true
+            qlf-sky.farm.delete: true
+            qlf-sky.farm.cancelInvite: true
+            qlf-sky.farm.leave: true
+            qlf-sky.farm.tp: true
 

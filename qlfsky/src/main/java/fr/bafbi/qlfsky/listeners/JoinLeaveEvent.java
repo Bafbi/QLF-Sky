@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scoreboard.Scoreboard;
 
 import fr.bafbi.qlfsky.App;
 import fr.bafbi.qlfsky.utils.PlayerProfilDB;
@@ -36,6 +37,7 @@ public class JoinLeaveEvent implements Listener {
 
         if (playerProfilDB.getPlaytime() == 0.0) {
             event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfilDB.countProfils() + 1))));
+            
             Bukkit.dispatchCommand(player, "spawn");
         }
         else event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));

@@ -12,16 +12,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.bafbi.qlfsky.commands.Farm;
+import fr.bafbi.qlfsky.commands.Fly;
 import fr.bafbi.qlfsky.commands.Money;
 import fr.bafbi.qlfsky.commands.Profil;
 import fr.bafbi.qlfsky.commands.Spawn;
 import fr.bafbi.qlfsky.configfile.GuiConfig;
 import fr.bafbi.qlfsky.listeners.GuardEvent;
 import fr.bafbi.qlfsky.listeners.JoinLeaveEvent;
+import fr.bafbi.qlfsky.listeners.PromoteDemoteEvent;
 import fr.bafbi.qlfsky.utils.VoidChunkGenerator;
+import net.luckperms.api.LuckPerms;
 
 public class App extends JavaPlugin {
 
@@ -29,12 +33,14 @@ public class App extends JavaPlugin {
     private static MongoCollection<Document> playerCol;
     private static App plugin;
     public GuiConfig guiConfig;
+    private LuckPerms luckPerms;
 
     @Override
     public void onEnable() {
 
         plugin = this;
         this.guiConfig = new GuiConfig(this);
+        this.luckPerms = getServer().getServicesManager().load(LuckPerms.class);
 
         //region Save Files
         this.saveDefaultConfig();
@@ -62,6 +68,8 @@ public class App extends JavaPlugin {
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new JoinLeaveEvent(this), this);
         pluginManager.registerEvents(new GuardEvent(this), this);
+
+        new PromoteDemoteEvent(this, this.luckPerms).register();
         //endregion
 
         //region Tab Commands
@@ -91,9 +99,19 @@ public class App extends JavaPlugin {
 
             //#region /spawn
 
+
+
             this.getCommand("spawn").setExecutor(new Spawn(this));
 
             //#endregion
+
+            //region /fly
+
+            PluginCommand flyCommand = this.getCommand("fly");
+            flyCommand.setExecutor(new Fly(this));
+            flyCommand.setTabCompleter(new Fly(this));
+
+            //endregion
 
         //endregion
 
