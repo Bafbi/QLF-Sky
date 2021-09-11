@@ -12,23 +12,19 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class Spawn implements CommandExecutor {
 
-    private App main;
+    private Qsky main;
     private FileConfiguration config;
-    private final ConfigurationSection textComponent;
+    private ConfigurationSection textComponent;
 
-    public Spawn (App main) {
+    public Spawn (Qsky main) {
 
         this.main = main;
-        this.config = main.getConfig();
-        this.textComponent = config.getConfigurationSection("textComponent.command.spawn");
 
     }
 
@@ -38,14 +34,17 @@ public class Spawn implements CommandExecutor {
         
         if (!(sender instanceof Player)) return false;
 
+        this.config = main.getConfig();
+        this.textComponent = this.config.getConfigurationSection("textComponent.command.spawn");
+
         Player player = (Player) sender;
         PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
-        List<Double> position = config.getDoubleList("spawn");
-        Location spawn = new Location(Bukkit.getWorld(config.getString("skyWorldName")), position.get(0), position.get(1), position.get(2));
+        List<Double> position = this.config.getDoubleList("spawn");
+        Location spawn = new Location(Bukkit.getWorld(this.config.getString("skyWorldName")), position.get(0), position.get(1), position.get(2));
 
         playerProfilLocal.setLocationUUID("spawn");
         player.teleport(spawn);
-        player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("teleported")));
+        player.sendMessage(GsonComponentSerializer.gson().deserialize(this.textComponent.getString("teleported")));
 
         return true;
     }

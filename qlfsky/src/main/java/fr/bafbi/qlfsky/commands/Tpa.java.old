@@ -1,0 +1,153 @@
+package fr.bafbi.qlfsky.commands;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.scheduling.CancelTpa;
+import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
+import fr.bafbi.qlfsky.utils.TpaInvitation;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+
+public class Tpa implements TabExecutor{
+
+    private App main;
+    private ConfigurationSection textComponent;
+
+    private static Map<Player, Map<Integer, TpaInvitation>> Invitations;
+
+    public Tpa (App main) {
+        this.main = main;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, @NotNull String[] args) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
+
+        if (!(sender instanceof Player)) return true;
+
+        this.textComponent = main.getConfig().getConfigurationSection("textComponent.command.tpa");
+
+        Player player = (Player) sender;
+        PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
+
+        if (args.length < 1) {
+            player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("missingSecondArg", "{\"text\":\"ZOOUBY pas de 2eme arg\"}")));
+            return true;
+        }
+
+        Player playerSelected = Bukkit.getPlayer(args[0]);
+        if (playerSelected == null) {
+
+            switch (args[0]) {
+                case "list":
+                    {
+                        String[] tpaPlayersUUID = playerProfilLocal.getTpaPlayersUUID();
+
+                        if (tpaPlayersUUID == null) {
+                            player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("noInvite", "{\"text\":\"ZOOUBY pas d'invite boloss\"}")));
+                            break;
+                        }
+                        for (String playersUUID : tpaPlayersUUID) {
+                            main.getLogger().info(playersUUID);
+                            player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("playerList", "{\"text\":\"ZOOuBY <player.name>\"}").replace("<player.name>", Bukkit.getPlayer(UUID.fromString(playersUUID)).getName())));
+                        }  
+                    }
+                    break;
+                case "accept":
+                    {
+                        if (args.length < 2) {
+                            
+                            Player playerOfInvitation = Bukkit.getPlayer(UUID.fromString(playerProfilLocal.getTpaPlayersUUID()[0]));
+                            PlayerProfilLocal playerOfInvitationProfilLocal = new PlayerProfilLocal(playerOfInvitation);
+
+                            player.teleport(playerOfInvitation);
+                            playerProfilLocal.setLocationUUID(playerOfInvitationProfilLocal.getLocationUUID());
+                            playerProfilLocal.removeLastTpaPlayerUUID();
+
+                        } else {
+
+                            Integer index;
+                            try {
+                                index = Integer.valueOf(args[1]) - 1;
+                            } catch (NumberFormatException e) {
+                                player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("notNumber", "{\"text\":\"ZOOUBY pas un nombre valable\"}")));
+                                break;
+                            }
+                            
+                            Player playerOfInvitation = Bukkit.getPlayer(UUID.fromString(playerProfilLocal.getTpaPlayersUUID()[index]));
+                            PlayerProfilLocal playerOfInvitationProfilLocal = new PlayerProfilLocal(playerOfInvitation);
+
+                            player.teleport(playerOfInvitation);
+                            playerProfilLocal.setLocationUUID(playerOfInvitationProfilLocal.getLocationUUID());
+                            playerProfilLocal.removeOneTpaPlayerUUID(index);
+                            
+                        }
+                    }
+                    break;
+                case "reject":
+                    {
+                        if (playerProfilLocal.getTpaPlayersUUID() != null) playerProfilLocal.removeLastTpaPlayerUUID();
+                    }
+                    break;
+                case "rejectall":
+                    {
+                        if (playerProfilLocal.getTpaPlayersUUID() != null) playerProfilLocal.removeTpaPlayerUUID();;
+                    }
+                    break;
+                default:
+                    player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("missingPlayer", "{\"text\":\"ZOOUBY player introuvable\"}")));
+                    break;    
+            }
+            return true;  
+        }
+
+        if (playerSelected.equals(player)) {
+            player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("error.selfTpa", "{\"text\":\"ZOOUBY t'es stupide ou quoi ?\"}")));
+            return true;
+        }
+
+        PlayerProfilLocal playerSelectedProfilLocal = new PlayerProfilLocal(playerSelected);
+
+        playerSelectedProfilLocal.addTpaPlayerUUID(player.getUniqueId().toString());
+        player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("error.allreadyTpa", "{\"text\":\"ZOOUBY une demande de tpa a etait demandé à "+playerSelected.getName()+"\"}")));
+        playerSelected.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("error.allreadyTpa", "{\"text\":\"ZOOUBY une demande de tpa a etait demandé par "+player.getName()+"\"}")));
+
+        new CancelTpa(player, playerSelected, this.main).runTaskLater(this.main, 600);
+
+        Integer id = new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                //Tpa.Invitations.get(playerSelected).
+                
+            }
+            
+        }.runTaskTimer(this.main, 20, 20).getTaskId();
+
+        //Tpa.Invitations.put(playerSelected, new TpaInvitation(player, playerSelected, id, 30));
+
+        return false;
+    }
+    
+}
+

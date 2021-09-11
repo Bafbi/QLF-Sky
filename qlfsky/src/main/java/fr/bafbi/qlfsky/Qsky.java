@@ -11,27 +11,31 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.bafbi.qlfsky.commands.Farm;
 import fr.bafbi.qlfsky.commands.Fly;
 import fr.bafbi.qlfsky.commands.Money;
 import fr.bafbi.qlfsky.commands.Profil;
+import fr.bafbi.qlfsky.commands.Qskyrl;
 import fr.bafbi.qlfsky.commands.Spawn;
 import fr.bafbi.qlfsky.configfile.GuiConfig;
 import fr.bafbi.qlfsky.listeners.GuardEvent;
 import fr.bafbi.qlfsky.listeners.JoinLeaveEvent;
 import fr.bafbi.qlfsky.listeners.PromoteDemoteEvent;
+import fr.bafbi.qlfsky.listeners.TpEvent;
+import fr.bafbi.qlfsky.utils.PlayerProfilDB;
+import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
 import fr.bafbi.qlfsky.utils.VoidChunkGenerator;
 import net.luckperms.api.LuckPerms;
 
-public class App extends JavaPlugin {
+public class Qsky extends JavaPlugin {
 
     private static MongoCollection<Document> islandCol;
     private static MongoCollection<Document> playerCol;
-    private static App plugin;
+    private static Qsky plugin;
     public GuiConfig guiConfig;
     private LuckPerms luckPerms;
 
@@ -60,14 +64,15 @@ public class App extends JavaPlugin {
             .build();
         MongoClient mongoClient = MongoClients.create(settings);
         MongoDatabase database = mongoClient.getDatabase("plugintest");
-        App.islandCol = database.getCollection("island");
-        App.playerCol = database.getCollection("player");
+        Qsky.islandCol = database.getCollection("island");
+        Qsky.playerCol = database.getCollection("player");
         //endregion
 
         //region Listeners
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new JoinLeaveEvent(this), this);
         pluginManager.registerEvents(new GuardEvent(this), this);
+        pluginManager.registerEvents(new TpEvent(this), this);
 
         new PromoteDemoteEvent(this, this.luckPerms).register();
         //endregion
@@ -99,8 +104,6 @@ public class App extends JavaPlugin {
 
             //#region /spawn
 
-
-
             this.getCommand("spawn").setExecutor(new Spawn(this));
 
             //#endregion
@@ -110,6 +113,22 @@ public class App extends JavaPlugin {
             PluginCommand flyCommand = this.getCommand("fly");
             flyCommand.setExecutor(new Fly(this));
             flyCommand.setTabCompleter(new Fly(this));
+
+            //endregion
+
+            //region /tpa
+
+            // PluginCommand tpaCommand = this.getCommand("tpa");
+            // tpaCommand.setExecutor(new Tpa(this));
+            // tpaCommand.setTabCompleter(new Tpa(this));
+
+            //endregion
+
+            //region /qskyrl
+
+            PluginCommand qskyrlCommand = this.getCommand("qskyrl");
+            qskyrlCommand.setExecutor(new Qskyrl(this));
+            qskyrlCommand.setTabCompleter(new Qskyrl(this));
 
             //endregion
 
@@ -135,6 +154,11 @@ public class App extends JavaPlugin {
     @Override
     public void onDisable() {
         this.getLogger().info("Not cool");
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
+            PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
+            playerProfilDB.update(playerProfilLocal.getMoney());
+        }
         super.onDisable();
     }
 
@@ -150,7 +174,7 @@ public class App extends JavaPlugin {
         return this.getConfig().getDouble("version", -1);
     }
 
-    public static App getPlugin() {
+    public static Qsky getPlugin() {
         return plugin;
     }
 

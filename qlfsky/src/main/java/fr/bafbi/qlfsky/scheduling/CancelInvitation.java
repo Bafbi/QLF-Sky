@@ -4,7 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
@@ -15,7 +15,7 @@ public class CancelInvitation extends BukkitRunnable {
     private final ConfigurationSection textComponent;
 
 
-    public CancelInvitation(Player player, Player playerInvited, App main) {
+    public CancelInvitation(Player player, Player playerInvited, Qsky main) {
         this.player = player;
         this.playerInvited = playerInvited;
         this.textComponent = main.getConfig().getConfigurationSection("textComponent.command.farm");

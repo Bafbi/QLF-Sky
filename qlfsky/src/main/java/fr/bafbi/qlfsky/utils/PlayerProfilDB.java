@@ -17,7 +17,7 @@ import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -26,9 +26,9 @@ import net.kyori.adventure.text.format.TextColor;
 
 public class PlayerProfilDB {
 
-    private final static App main = App.getPlugin();
+    private final static Qsky main = Qsky.getPlugin();
     private final Player player;
-    private final MongoCollection<Document> playerCol = App.getPlayerCol();
+    private final MongoCollection<Document> playerCol = Qsky.getPlayerCol();
     private Document playerDoc;
 
     private final String Uuid;
@@ -146,10 +146,11 @@ public class PlayerProfilDB {
         return this.playerCol.countDocuments();
     }
 
-    public void update() {
+    public void update(Long money) {
         
         this.setPlaytime(this.Playtime + (Double) ((new Date().getTime() - (this.Last_Connection.after(this.Connection_Time) ? this.Last_Connection.getTime() : this.Connection_Time.getTime())) / 1000.0 / 60.0 / 60.0));
         this.setLastConnection(new Date());
+        this.setMoney(money);
 
     }
 
@@ -176,7 +177,7 @@ public class PlayerProfilDB {
     public static Book getProfilBook(final Player target){
 
         String targetUUIDString = target.getUniqueId().toString();
-        MongoCollection<Document> playerCol = App.getPlayerCol();
+        MongoCollection<Document> playerCol = Qsky.getPlayerCol();
         Document playerDoc = playerCol.find(Filters.eq("UUID", targetUUIDString)).first();
 
         Component bookTitle = Component.text("???").decorate(TextDecoration.OBFUSCATED);

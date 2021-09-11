@@ -9,27 +9,29 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scoreboard.Scoreboard;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 import fr.bafbi.qlfsky.utils.PlayerProfilDB;
 import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class JoinLeaveEvent implements Listener {
     
-    private final App main;
-    private final ConfigurationSection textComponent;
+    private final Qsky main;
+    private ConfigurationSection textComponent;
 
-    public JoinLeaveEvent(App main) {
-
+    public JoinLeaveEvent(Qsky main) {
         this.main = main;
-        this.textComponent = main.getConfig().getConfigurationSection("textComponent.event.joinLeave");
-
     }
+
+    private void loadTextComponent() {
+        this.textComponent = main.getConfig().getConfigurationSection("textComponent.event.joinLeave");
+    } 
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+
+        loadTextComponent();
 
         Player player = event.getPlayer();
         PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
@@ -53,15 +55,16 @@ public class JoinLeaveEvent implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
 
+        loadTextComponent();
+
         Player player = event.getPlayer();
         PlayerProfilDB playerProfilDB = new PlayerProfilDB(player);
         PlayerProfilLocal playerProfilLocal= new PlayerProfilLocal(player);
 
         event.quitMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("disconnect").replace("<player.name>", player.getName())));
 
-        playerProfilDB.update();
+        playerProfilDB.update(playerProfilLocal.getMoney());
         playerProfilDB.setOnline(false);
-        playerProfilDB.setMoney(playerProfilLocal.getMoney());
 
     }
 

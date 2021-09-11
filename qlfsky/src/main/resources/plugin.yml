@@ -1,81 +1,102 @@
-main: fr.bafbi.qlfsky.App
-name: QLF-Sky
+main: fr.bafbi.qlfsky.Qsky
+name: Qsky
 version: 0.1
 api-version: 1.16
 database: true
 author: Bafbi#3144
 website: https://github.com/Bafbi
-descirption: "Plugin custom créé pour QLF-Sky (Pour tout contact avec l'equipe de developpement, mp : Bafbi#3144)"
+descirption: "Plugin custom créé pour Qlf-Sky (Pour tout contact avec l'equipe de developpement, mp : Bafbi#3144)"
 
 commands:
     #DataBase / Local relative
     profil:
-        #aliases: []
+        aliases: []
         description: "Affiche le profil public d'un joueur."
-        permission: qlf-sky.profil
+        permission: qsky.profil
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command> <player>"
 
     money:
         aliases: [balance, argent]
         description: "Affiche le profil public d'un joueur."
-        permission: qlf-sky.money
+        permission: qsky.money
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
 
     farm:
         aliases: [is, island]
         description: "Affiche le menu du serveur."
-        permission: qlf-sky.farm
+        permission: qsky.farm
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
 
     spawn:
         aliases: []
         description: "Teleport au spawn."
-        permission: qlf-sky.spawn
+        permission: qsky.spawn
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
 
     fly:
         aliases: []
         description: "permet au joueur de voler librement"
-        permission: qlf-sky.fly
+        permission: qsky.fly
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
+    # tpa:
+    #     aliases: []
+    #     description: "permet de faire une demande te tp"
+    #     permission: qsky.tpa
+    #     permission-message: Cette command n'est pas pour toi!
+    #     usage: "§e§oUsage: /<command> <player>"
+    qskyrl:
+        aliases: []
+        description: "reload les configs"
+        permission: qsky.qskyrl
+        permission-message: Cette command n'est pas pour toi!
+        usage: "§e§oUsage: /<command>"
+    bypass:
+        aliases: []
+        description: "permet de bypass les permissions d'une ile"
+        permission: qsky.bypass
+        permission-message: Cette command n'est pas pour toi!
+        usage: "§e§oUsage: /<command> <island/player>"
 
 permissions:
-    qlf-sky.*:
-        description: Donne accès à toute les commands de qlf-sky
+    qsky.*:
+        description: Donne accès à toute les commands de Qsky
         default: op
         children:
-            qlf-sky.profil: true
-            qlf-sky.money: true
-            qlf-sky.farm: true
-            qlf-sky.spawn: true
-    qlf-sky.spawn:
+            qsky.profil: true
+            qsky.admin.money: true
+            qsky.farm: true
+            qsky.spawn: true
+            qsky.fly: true
+            qsky.qskyrl: true
+            qsky.bypass: true
+    qsky.spawn:
         description: Donne l'accès de ce téléporter au spawn
-    qlf-sky.money:
+    qsky.money:
         description: Donne l'accès à utiliser l'économie 
         children: 
-            qlf-sky.money.pay: true
-            qlf-sky.money.bal: true
-            qlf-sky.money.baltop: true
-    qlf-sky.money.admin:
+            qsky.money.pay: true
+            qsky.money.bal: true
+            qsky.money.baltop: true
+    qsky.admin.money:
         description: Donne accès à utiliser l'économie de façon admin
         children:
-            qlf-sky.money: true
-    qlf-sky.farm:
+            qsky.money: true
+    qsky.farm:
         description: Donne accès à utilisé les iles
         children:
-            qlf-sky.farm.sethome: true
-            qlf-sky.farm.home: true
-            qlf-sky.farm.invite: true
-            qlf-sky.farm.join: true
-            qlf-sky.farm.reject: true
-            qlf-sky.farm.create: true
-            qlf-sky.farm.delete: true
-            qlf-sky.farm.cancelInvite: true
-            qlf-sky.farm.leave: true
-            qlf-sky.farm.tp: true
+            qsky.farm.sethome: true
+            qsky.farm.home: true
+            qsky.farm.invite: true
+            qsky.farm.join: true
+            qsky.farm.reject: true
+            qsky.farm.create: true
+            qsky.farm.delete: true
+            qsky.farm.cancelInvite: true
+            qsky.farm.leave: true
+            qsky.farm.tp: true
 

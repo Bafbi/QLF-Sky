@@ -12,22 +12,22 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
-import org.bson.codecs.MapCodec;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.TreeType;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+
+@SuppressWarnings("unchecked")
 
 public class IslandProfilDB {
 
-    private final static App main = App.getPlugin();
-    private final MongoCollection<Document> islandCol = App.getIslandCol();
+    private final static Qsky main = Qsky.getPlugin();
+    private final MongoCollection<Document> islandCol = Qsky.getIslandCol();
     private Document islandDoc;
 
     private final String Uuid;
@@ -202,11 +202,11 @@ public class IslandProfilDB {
 
     public void setPermissionLevelOfPlayer(Player player, Integer permissionLevel) {
         String playerUUID = player.getUniqueId().toString();
-        this.PlayersUUID_PermissionLevel.replace(playerUUID, permissionLevel);
+        this.PlayersUUID_PermissionLevel.put(playerUUID, permissionLevel);
         this.islandCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("PlayersUUID_PermissionLevel", this.PlayersUUID_PermissionLevel));
     }
     public void setPermissionLevelOfPlayer(String playerUUID, Integer permissionLevel) {
-        this.PlayersUUID_PermissionLevel.replace(playerUUID, permissionLevel);
+        this.PlayersUUID_PermissionLevel.put(playerUUID, permissionLevel);
         this.islandCol.updateOne(Filters.eq("UUID", this.Uuid), Updates.set("PlayersUUID_PermissionLevel", this.PlayersUUID_PermissionLevel));
     }
 
@@ -230,7 +230,7 @@ public class IslandProfilDB {
 
     public static void createNewIslandProfil(Player player, String islandName) {
 
-        MongoCollection<Document> islandCol = App.getIslandCol();
+        MongoCollection<Document> islandCol = Qsky.getIslandCol();
         Long countDoc = islandCol.countDocuments() + 5;
         List<Double> positionXZ = List.of( 200 * countDoc * Math.sin(countDoc * 20), 81.0, 200 * countDoc * Math.cos(countDoc * 20));
         String leaderUuid = player.getUniqueId().toString();
@@ -260,8 +260,9 @@ public class IslandProfilDB {
 
         islandCol.insertOne(profil);
 
-        Location loc = new Location(Bukkit.getWorld("sky"), positionXZ.get(0), 80, positionXZ.get(2));
+        Location loc = new Location(Bukkit.getWorld("sky"), positionXZ.get(0), 90, positionXZ.get(2));
         loc.getBlock().setType(Material.GRASS_BLOCK);
+        Bukkit.getWorld("sky").generateTree(loc.add(0, 1, 0), TreeType.TREE);
 
     }
 

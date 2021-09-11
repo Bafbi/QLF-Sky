@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 import fr.bafbi.qlfsky.utils.PlayerProfilDB;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
@@ -18,9 +18,9 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 public class Profil implements TabExecutor {
     
-    private App main;
+    private Qsky main;
 
-    public Profil(App main) {
+    public Profil(Qsky main) {
 
         this.main = main;
 

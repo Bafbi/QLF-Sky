@@ -7,15 +7,15 @@ import java.io.InputStreamReader;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 
 public class GuiConfig {
 
-    private App main;
+    private Qsky main;
     private FileConfiguration guiConfig = null;
     private File guiFile = null;
 
-    public GuiConfig(App main) {
+    public GuiConfig(Qsky main) {
         this.main = main;
 
         saveDefaultConfig();

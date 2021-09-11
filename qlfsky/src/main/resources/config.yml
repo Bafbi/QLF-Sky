@@ -2,7 +2,7 @@ mongoDB:
     connectionString:
 
 version: 0.1
-spawn : [0.0, 180.0, 0.0]
+spawn : [-0.5, 160.6, -0.5]
 skyWorldName : "sky"
 currency: 
     name: ManaCoin
@@ -13,9 +13,16 @@ defaultGuard:
         place: 5
         break: 5
     entity:
-        attack : 5
+        attack: 5
     util:
-        fly : 4
+        fly: 4
+        tp: 1
+    command:
+        sethome: 5
+        delete: 8
+        invite: 6
+        cancelInvite: 6
+        perm: 6
 
 textComponent:
     event:
@@ -25,7 +32,11 @@ textComponent:
             disconnect: '[{"text":"- ","color":"dark_red"},{"text":"<player.name>","color":"aqua"}]'
         guard:
             notPermit: '[{"text":"\u26a0 | ","color":"red"},{"text":"Vous n\u2032avez pas la permission de faire cette action ","color":"gray"},{"text":"| \u26a0","color":"red"}]'
+        tp: 
+            noFly: '[{"text":"\u26a0 | ","color":"red"},{"text":"Vous n\u2032avez pas la permission de fly sur l\u2032ile : <island.name> ","color":"gray"},{"text":"| \u26a0","color":"red"}]'
     command:
+        bypass: 
+            bypassed: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/bypass"}},{"text":"Votre bypass vient d′être appliqué sur l\u2032ile : <island.name> ","color":"gray","clickEvent":{"action":"suggest_command","value":"/bypass"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/bypass"}}]'
         money:
             getBalance: '[{"text":"\u26c3 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"Vous avez ","color":"gray","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"<data.money> ","color":"gold","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"<config.currency.displayName> ","color":"aqua","clickEvent":{"action":"suggest_command","value":"/money"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/money"}}]'
         spawn:
@@ -45,7 +56,11 @@ textComponent:
             cancelInvite: 
                 error:
                     missingSecondArg: '[{"text":"\u270e | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"/farm cancelInvite {Pseudo} ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}}]'
-                    missingPlayer: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"Le joueur indiqué n\u2032existe pas ou n\u2032est pas present ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}}]'
+                    missingPlayerOrIsland: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"Le joueur ou l\u2032ile indiqué n\u2032existe pas ou n\u2032est pas present ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}}]'
                     notInvited: '[{"text":"\u2691 | ","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"<selectedPlayer.name> n\u2032a pas d\u2032invite de votre island ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}},{"text":"|","color":"red","clickEvent":{"action":"suggest_command","value":"/farm cancelInvite"}}]'
                 invitationCancel: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/farm create"}},{"text":"<player.name> vient d\u2032annuler l\u2032invitation ","color":"gray","clickEvent":{"action":"suggest_command","value":"/farm create"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/farm create"}}]'
                 invitationCancelBroadcast: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"run_command","value":"/farm invite <selectedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour la renvoyer","color":"gray"}}},{"text":"L\u2032invitation à <selectedPlayer.name> vient d\u2032être annulé par <player.name> ","color":"gray","clickEvent":{"action":"run_command","value":"/farm invite <selectedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour la renvoyer","color":"gray"}}},{"text":"|","color":"yellow","clickEvent":{"action":"run_command","value":"/farm invite <selectedPlayer.name>"},"hoverEvent":{"action":"show_text","contents":{"text":"Cliquez pour la renvoyer","color":"gray"}}}]'
+        fly:
+            notPermit: '[{"text":"\u26a0 | ","color":"red"},{"text":"Vous n\u2032avez pas la permission de faire cette action ","color":"gray"},{"text":"| \u26a0","color":"red"}]'
+            activated: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/fly"}},{"text":"Vous vennez d′activer le fly ","color":"gray","clickEvent":{"action":"suggest_command","value":"/fly"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/fly"}}]'
+            desactivated: '[{"text":"\u2691 | ","color":"yellow","clickEvent":{"action":"suggest_command","value":"/fly"}},{"text":"Vous vennez de désactiver le fly ","color":"gray","clickEvent":{"action":"suggest_command","value":"/fly"}},{"text":"|","color":"yellow","clickEvent":{"action":"suggest_command","value":"/fly"}}]'

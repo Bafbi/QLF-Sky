@@ -1,7 +1,6 @@
 package fr.bafbi.qlfsky.commands;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,20 +10,17 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import fr.bafbi.qlfsky.App;
+import fr.bafbi.qlfsky.Qsky;
 import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class Money implements TabExecutor {
 
-    private final App main;
-    private final ConfigurationSection textComponent;
+    private final Qsky main;
+    private ConfigurationSection textComponent;
 
-    public Money(App app) {
+    public Money(Qsky app) {
         this.main = app;
-        this.textComponent = main.getConfig().getConfigurationSection("textComponent.command.money");
     }
 
     @Override
@@ -44,6 +40,8 @@ public class Money implements TabExecutor {
             return true;
 
         }
+
+        this.textComponent = main.getConfig().getConfigurationSection("textComponent.command.money");
 
         Player player = (Player) sender;
         PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
