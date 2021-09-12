@@ -1,5 +1,6 @@
 package fr.bafbi.qsky.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -73,13 +74,17 @@ public class GuardEvent implements Listener{
 
         if (!(event.hasBlock())) return;
 
+        //main.getLogger().info(Material.CHEST.toString());
+
         Player player = event.getPlayer();
         PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
 
         IslandProfilDB currentIslandProfilDB = new IslandProfilDB(playerProfilLocal.getLocationUUID());
 
         Integer playerPermissionLevel = currentIslandProfilDB.getPermissionLevelOfPlayer(player);
-        Integer islandPermissionLevel = currentIslandProfilDB.getLevelOfPermission("block.ude");
+        Integer islandPermissionLevel = currentIslandProfilDB.getLevelOfPermission("block.interract." + event.getClickedBlock().getType().toString());
+
+        if (islandPermissionLevel == null) return;
 
         if (playerPermissionLevel < islandPermissionLevel) {
             event.setCancelled(true);

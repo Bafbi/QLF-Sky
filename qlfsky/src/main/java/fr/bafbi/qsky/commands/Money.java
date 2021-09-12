@@ -11,7 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import fr.bafbi.qsky.Qsky;
+import fr.bafbi.qsky.utils.Baltop;
+import fr.bafbi.qsky.utils.PlayerProfilDB;
 import fr.bafbi.qsky.utils.PlayerProfilLocal;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class Money implements TabExecutor {
@@ -46,12 +49,29 @@ public class Money implements TabExecutor {
         Player player = (Player) sender;
         PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
 
-        if (args.length <= 0) {
-
+        if (args.length < 1) {
             player.sendMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("getBalance").replace("<data.money>", Long.toString(playerProfilLocal.getMoney())).replace("<config.currency.displayName>", main.getConfig().getString("currency.displayName"))));
-
+            return false;
         }
-        return false;
+
+        switch (args[0]) {
+            case "baltop":
+                {
+                    Baltop.reCalc(main);
+
+                    for (int index = 0; index < Baltop.getBaltop().size() && index < 10; index++) {
+
+                        PlayerProfilDB playerProfilDB = new PlayerProfilDB(Baltop.getBaltop().get(index));
+
+                        player.sendMessage(Component.text(playerProfilDB.getMoney() + main.getConfig().getString("currency.displayName") + " : " + playerProfilDB.getPseudo()));
+                    }
+                    
+                }
+                return true;
+            default:
+                return false;
+        }
+        
     }
     
 }

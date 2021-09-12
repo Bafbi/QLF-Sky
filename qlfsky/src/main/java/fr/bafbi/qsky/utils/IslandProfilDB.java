@@ -269,15 +269,21 @@ public class IslandProfilDB {
     private static Map<String, Integer> getDefaultGuard() {
         ConfigurationSection config = main.getConfig().getConfigurationSection("defaultGuard");
         Map<String, Integer> defaultGuard = new HashMap<>();
-        String guardKey1;
         //main.getLogger().info(config.getKeys(false).toString());
         for (String section1 : config.getKeys(false)) {
-            guardKey1 = section1;
+            String guardKey1 = section1;
             //main.getLogger().info(section1);
             ConfigurationSection config2 = config.getConfigurationSection(section1);
             for (String section2 : config2.getKeys(false)) {
                 String guardKey2 = guardKey1 + "." + section2;
-                defaultGuard.put(guardKey2, config.getInt(guardKey2));
+                ConfigurationSection config3 = config.getConfigurationSection(guardKey2);
+                if (config3 == null) defaultGuard.put(guardKey2, config.getInt(guardKey2));
+                else {
+                    for (String section3 : config3.getKeys(false)) {
+                        String guardKey3 = guardKey2 + "." + section3;
+                        defaultGuard.put(guardKey3, config.getInt(guardKey3));
+                    }
+                }
                 //main.getLogger().info(guardKey2);
             }
         }

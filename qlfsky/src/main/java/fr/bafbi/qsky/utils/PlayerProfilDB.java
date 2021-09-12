@@ -27,7 +27,7 @@ import net.kyori.adventure.text.format.TextColor;
 public class PlayerProfilDB {
 
     private final static Qsky main = Qsky.getPlugin();
-    private final Player player;
+    private Player player;
     private final MongoCollection<Document> playerCol = Qsky.getPlayerCol();
     private Document playerDoc;
 
@@ -35,7 +35,7 @@ public class PlayerProfilDB {
     private String Pseudo;
     private Boolean Online;
     private List<Double> Played_Server_Version;
-    private final Date First_Connection;
+    private Date First_Connection;
     private Date Connection_Time;
     private Date Last_Connection;
     private Double Playtime;
@@ -45,9 +45,21 @@ public class PlayerProfilDB {
     public PlayerProfilDB(Player player) {
 
         this.player = player;
-
         this.Uuid = player.getUniqueId().toString();        
 
+        init();
+
+    }
+
+    public PlayerProfilDB(String playerUUID) {
+
+        this.Uuid = playerUUID;   
+
+        init();
+
+    }
+
+    private void init() {
         this.playerDoc = this.playerCol.find(Filters.eq("UUID", this.Uuid)).first();
 
         if (playerDoc == null) {
@@ -68,7 +80,6 @@ public class PlayerProfilDB {
         if (this.Money == null) this.setMoney(0);
         this.IslandUUID = playerDoc.getString("IslandUUID");
         if (this.IslandUUID == null) this.setIslandUUID(null);
-
     }
 
     public String getUUID() {

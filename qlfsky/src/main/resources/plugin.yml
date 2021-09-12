@@ -7,6 +7,8 @@ author: Bafbi#3144
 website: https://github.com/Bafbi
 descirption: "Plugin custom créé pour Qlf-Sky (Pour tout contact avec l'equipe de developpement, mp : Bafbi#3144)"
 
+softdepend: [LuckPerms]
+
 commands:
     #DataBase / Local relative
     profil:

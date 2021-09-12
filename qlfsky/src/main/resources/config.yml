@@ -10,10 +10,13 @@ currency:
 
 defaultGuard:
     block:
-        place: 5
-        break: 5
+        place: 4
+        break: 4
+        interract: 
+            CHEST: 4
+            CRAFTING_TABLE: 1
     entity:
-        attack: 5
+        attack: 4
     util:
         fly: 4
         tp: 1
