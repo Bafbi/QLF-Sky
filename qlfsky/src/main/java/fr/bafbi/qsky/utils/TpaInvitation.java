@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.utils;
+package fr.bafbi.qsky.utils;
 
 import org.bukkit.entity.Player;
 

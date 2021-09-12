@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky;
+package fr.bafbi.qsky;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

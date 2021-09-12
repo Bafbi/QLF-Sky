@@ -4,11 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>fr.bafbi.qlfsky</groupId>
-  <artifactId>qlfsky</artifactId>
+  <groupId>fr.bafbi.qsky</groupId>
+  <artifactId>qsky</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>qlfsky</name>
+  <name>qsky</name>
   <!-- FIXME change it to the project's website -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -75,6 +75,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>C:\Users\bafbi\Documents\Qsky_dev_serv_1.16.5\plugins\Qsky.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>

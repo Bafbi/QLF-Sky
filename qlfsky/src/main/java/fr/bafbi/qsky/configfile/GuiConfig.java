@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.configfile;
+package fr.bafbi.qsky.configfile;
 
 import java.io.File;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import fr.bafbi.qlfsky.Qsky;
+import fr.bafbi.qsky.Qsky;
 
 public class GuiConfig {
 

@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.listeners;
+package fr.bafbi.qsky.listeners;
 
 import java.util.Comparator;
 import java.util.NoSuchElementException;
@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import fr.bafbi.qlfsky.Qsky;
+import fr.bafbi.qsky.Qsky;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.event.EventBus;

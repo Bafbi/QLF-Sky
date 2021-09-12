@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.listeners;
+package fr.bafbi.qsky.listeners;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -6,10 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
-import fr.bafbi.qlfsky.Qsky;
-import fr.bafbi.qlfsky.utils.IslandProfilDB;
-import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
+import fr.bafbi.qsky.Qsky;
+import fr.bafbi.qsky.utils.IslandProfilDB;
+import fr.bafbi.qsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class GuardEvent implements Listener{
@@ -57,6 +58,28 @@ public class GuardEvent implements Listener{
 
         Integer playerPermissionLevel = currentIslandProfilDB.getPermissionLevelOfPlayer(player);
         Integer islandPermissionLevel = currentIslandProfilDB.getLevelOfPermission("block.break");
+
+        if (playerPermissionLevel < islandPermissionLevel) {
+            event.setCancelled(true);
+            player.sendActionBar(GsonComponentSerializer.gson().deserialize(textComponent.getString("notPermit")));
+        }
+
+    }
+
+    @EventHandler
+    public void onBlockUse(PlayerInteractEvent event) {
+
+        loadTextComponent();
+
+        if (!(event.hasBlock())) return;
+
+        Player player = event.getPlayer();
+        PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
+
+        IslandProfilDB currentIslandProfilDB = new IslandProfilDB(playerProfilLocal.getLocationUUID());
+
+        Integer playerPermissionLevel = currentIslandProfilDB.getPermissionLevelOfPlayer(player);
+        Integer islandPermissionLevel = currentIslandProfilDB.getLevelOfPermission("block.ude");
 
         if (playerPermissionLevel < islandPermissionLevel) {
             event.setCancelled(true);

@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.commands;
+package fr.bafbi.qsky.commands;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import fr.bafbi.qlfsky.Qsky;
-import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
+import fr.bafbi.qsky.Qsky;
+import fr.bafbi.qsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class Spawn implements CommandExecutor {

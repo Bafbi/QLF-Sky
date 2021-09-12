@@ -1,11 +1,11 @@
-package fr.bafbi.qlfsky.utils;
+package fr.bafbi.qsky.utils;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import fr.bafbi.qlfsky.Qsky;
+import fr.bafbi.qsky.Qsky;
 
 public class PlayerProfilLocal {
 

@@ -1,4 +1,4 @@
-main: fr.bafbi.qlfsky.Qsky
+main: fr.bafbi.qsky.Qsky
 name: Qsky
 version: 0.1
 api-version: 1.16

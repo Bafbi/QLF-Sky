@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.listeners;
+package fr.bafbi.qsky.listeners;
 
 import java.util.Date;
 
@@ -10,9 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import fr.bafbi.qlfsky.Qsky;
-import fr.bafbi.qlfsky.utils.PlayerProfilDB;
-import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
+import fr.bafbi.qsky.Qsky;
+import fr.bafbi.qsky.utils.PlayerProfilDB;
+import fr.bafbi.qsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class JoinLeaveEvent implements Listener {
@@ -47,6 +47,7 @@ public class JoinLeaveEvent implements Listener {
         playerProfilDB.setOnline(true);
         playerProfilDB.setConnectionTime(new Date());
         playerProfilLocal.setMoney(playerProfilDB.getMoney());
+        playerProfilLocal.setIslandInviteUUID("null");
 
         if (!playerProfilDB.getPlayedServerVersion().contains(main.getServerVersion())) playerProfilDB.addPlayedServerVersion(main.getServerVersion());  
 
@@ -65,6 +66,7 @@ public class JoinLeaveEvent implements Listener {
 
         playerProfilDB.update(playerProfilLocal.getMoney());
         playerProfilDB.setOnline(false);
+        playerProfilLocal.setIslandInviteUUID("null");
 
     }
 

@@ -1,4 +1,6 @@
-package fr.bafbi.qlfsky.listeners;
+package fr.bafbi.qsky.listeners;
+
+import java.util.NoSuchElementException;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -7,9 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import fr.bafbi.qlfsky.Qsky;
-import fr.bafbi.qlfsky.utils.IslandProfilDB;
-import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
+import fr.bafbi.qsky.Qsky;
+import fr.bafbi.qsky.utils.IslandProfilDB;
+import fr.bafbi.qsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class TpEvent implements Listener {
@@ -29,7 +31,12 @@ public class TpEvent implements Listener {
         this.textComponent = main.getConfig().getConfigurationSection("textComponent.event.tp");
 
         Player player = event.getPlayer();
-        Player playerTpTo = event.getTo().getNearbyPlayers(2).iterator().next();
+        Player playerTpTo;
+        try {
+            playerTpTo = event.getTo().getNearbyPlayers(2).iterator().next();
+        } catch (NoSuchElementException e) {
+            playerTpTo = null;
+        }
 
         PlayerProfilLocal playerProfilLocal = new PlayerProfilLocal(player);
 

@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.utils;
+package fr.bafbi.qsky.utils;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -17,7 +17,7 @@ import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
-import fr.bafbi.qlfsky.Qsky;
+import fr.bafbi.qsky.Qsky;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

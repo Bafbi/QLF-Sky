@@ -1,8 +1,8 @@
-package fr.bafbi.qlfsky.utils;
+package fr.bafbi.qsky.utils;
 
 import org.bukkit.inventory.Inventory;
 
-import fr.bafbi.qlfsky.configfile.GuiConfig;
+import fr.bafbi.qsky.configfile.GuiConfig;
 
 public class CustomGui {
 

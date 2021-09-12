@@ -1,11 +1,11 @@
-package fr.bafbi.qlfsky.scheduling;
+package fr.bafbi.qsky.scheduling;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.bafbi.qlfsky.Qsky;
-import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
+import fr.bafbi.qsky.Qsky;
+import fr.bafbi.qsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 public class CancelInvitation extends BukkitRunnable {

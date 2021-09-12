@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky;
+package fr.bafbi.qsky;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -15,20 +15,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.bafbi.qlfsky.commands.Farm;
-import fr.bafbi.qlfsky.commands.Fly;
-import fr.bafbi.qlfsky.commands.Money;
-import fr.bafbi.qlfsky.commands.Profil;
-import fr.bafbi.qlfsky.commands.Qskyrl;
-import fr.bafbi.qlfsky.commands.Spawn;
-import fr.bafbi.qlfsky.configfile.GuiConfig;
-import fr.bafbi.qlfsky.listeners.GuardEvent;
-import fr.bafbi.qlfsky.listeners.JoinLeaveEvent;
-import fr.bafbi.qlfsky.listeners.PromoteDemoteEvent;
-import fr.bafbi.qlfsky.listeners.TpEvent;
-import fr.bafbi.qlfsky.utils.PlayerProfilDB;
-import fr.bafbi.qlfsky.utils.PlayerProfilLocal;
-import fr.bafbi.qlfsky.utils.VoidChunkGenerator;
+import fr.bafbi.qsky.commands.Farm;
+import fr.bafbi.qsky.commands.Fly;
+import fr.bafbi.qsky.commands.Money;
+import fr.bafbi.qsky.commands.Profil;
+import fr.bafbi.qsky.commands.Qskyrl;
+import fr.bafbi.qsky.commands.Spawn;
+import fr.bafbi.qsky.configfile.GuiConfig;
+import fr.bafbi.qsky.listeners.GuardEvent;
+import fr.bafbi.qsky.listeners.JoinLeaveEvent;
+import fr.bafbi.qsky.listeners.PromoteDemoteEvent;
+import fr.bafbi.qsky.listeners.TpEvent;
+import fr.bafbi.qsky.utils.PlayerProfilDB;
+import fr.bafbi.qsky.utils.PlayerProfilLocal;
+import fr.bafbi.qsky.utils.VoidChunkGenerator;
 import net.luckperms.api.LuckPerms;
 
 public class Qsky extends JavaPlugin {

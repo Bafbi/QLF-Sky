@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.utils;
+package fr.bafbi.qsky.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import org.bukkit.TreeType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import fr.bafbi.qlfsky.Qsky;
+import fr.bafbi.qsky.Qsky;
 import net.kyori.adventure.text.Component;
 
 @SuppressWarnings("unchecked")
@@ -232,7 +232,7 @@ public class IslandProfilDB {
 
         MongoCollection<Document> islandCol = Qsky.getIslandCol();
         Long countDoc = islandCol.countDocuments() + 5;
-        List<Double> positionXZ = List.of( 200 * countDoc * Math.sin(countDoc * 20), 81.0, 200 * countDoc * Math.cos(countDoc * 20));
+        List<Double> positionXZ = List.of( 200 * countDoc * Math.sin(countDoc * 20), 90.0, 200 * countDoc * Math.cos(countDoc * 20));
         String leaderUuid = player.getUniqueId().toString();
         UUID newUuid = null;
         boolean duplicate = true;
@@ -260,7 +260,7 @@ public class IslandProfilDB {
 
         islandCol.insertOne(profil);
 
-        Location loc = new Location(Bukkit.getWorld("sky"), positionXZ.get(0), 90, positionXZ.get(2));
+        Location loc = new Location(Bukkit.getWorld("sky"), positionXZ.get(0), 80, positionXZ.get(2));
         loc.getBlock().setType(Material.GRASS_BLOCK);
         Bukkit.getWorld("sky").generateTree(loc.add(0, 1, 0), TreeType.TREE);
 

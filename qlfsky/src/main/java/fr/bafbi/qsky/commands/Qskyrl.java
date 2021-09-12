@@ -1,4 +1,4 @@
-package fr.bafbi.qlfsky.commands;
+package fr.bafbi.qsky.commands;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import fr.bafbi.qlfsky.Qsky;
+import fr.bafbi.qsky.Qsky;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
