@@ -58,7 +58,7 @@ public class Qsky extends JavaPlugin {
         //endregion
 
         //region MongoDB
-        ConnectionString connectionString = new ConnectionString("mongodb+srv://Bafbi:xBAvb4qV*$VkCvC@skyrun.qzl6x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"/*this.getConfig().getString("mongoDB.connectionString")*/);
+        ConnectionString connectionString = new ConnectionString(""/*this.getConfig().getString("mongoDB.connectionString")*/);
         MongoClientSettings settings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
             .build();
