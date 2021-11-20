@@ -6,6 +6,7 @@ import java.util.List;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 
+import fr.bafbi.qsky.utils.PermGui;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -285,7 +286,10 @@ public class Farm implements TabExecutor {
             case "perm":
                 {
                     if (args.length < 3) {
-                        return false;
+
+                        player.openInventory(new PermGui(playerProfilDB.getIslandUUID()).openGui(null));
+
+                        return true;
                     }
 
                     Player playerSelected = Bukkit.getPlayer(args[1]);

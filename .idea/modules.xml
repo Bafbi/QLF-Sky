@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/QLF-Sky.iml" filepath="$PROJECT_DIR$/.idea/QLF-Sky.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qlfsky/qsky.iml" filepath="$PROJECT_DIR$/qlfsky/qsky.iml" />
+    </modules>
+  </component>
+</project>

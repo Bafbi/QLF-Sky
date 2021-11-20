@@ -1,18 +1,17 @@
 package fr.bafbi.qsky.listeners;
 
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-
 import fr.bafbi.qsky.Qsky;
 import fr.bafbi.qsky.utils.IslandProfilDB;
 import fr.bafbi.qsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class GuardEvent implements Listener{
 
@@ -27,7 +26,7 @@ public class GuardEvent implements Listener{
         this.textComponent = main.getConfig().getConfigurationSection("textComponent.event.guard");
     } 
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onBlockPlace(BlockPlaceEvent event) {
 
         loadTextComponent();
@@ -47,7 +46,7 @@ public class GuardEvent implements Listener{
 
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onBlockBreak(BlockBreakEvent event) {
 
         loadTextComponent();
@@ -67,7 +66,7 @@ public class GuardEvent implements Listener{
 
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onBlockUse(PlayerInteractEvent event) {
 
         loadTextComponent();
