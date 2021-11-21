@@ -7,20 +7,18 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import eu.endercentral.crazy_advancements.Advancement;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import fr.bafbi.qsky.commands.*;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.bafbi.qsky.commands.Farm;
-import fr.bafbi.qsky.commands.Fly;
-import fr.bafbi.qsky.commands.Money;
-import fr.bafbi.qsky.commands.Profil;
-import fr.bafbi.qsky.commands.Qskyrl;
-import fr.bafbi.qsky.commands.Spawn;
 import fr.bafbi.qsky.configfile.GuiConfig;
 import fr.bafbi.qsky.listeners.GuardEvent;
 import fr.bafbi.qsky.listeners.JoinLeaveEvent;
@@ -37,6 +35,7 @@ public class Qsky extends JavaPlugin {
     private static MongoCollection<Document> playerCol;
     private static Qsky plugin;
     public GuiConfig guiConfig;
+    public AdvancementManager advancementManager;
     private LuckPerms luckPerms;
 
     @Override
@@ -45,6 +44,8 @@ public class Qsky extends JavaPlugin {
         plugin = this;
         this.guiConfig = new GuiConfig(this);
         this.luckPerms = getServer().getServicesManager().load(LuckPerms.class);
+        this.advancementManager = new AdvancementManager();
+
 
         //region Save Files
         this.saveDefaultConfig();
@@ -58,7 +59,7 @@ public class Qsky extends JavaPlugin {
         //endregion
 
         //region MongoDB
-        ConnectionString connectionString = new ConnectionString(""/*this.getConfig().getString("mongoDB.connectionString")*/);
+        ConnectionString connectionString = new ConnectionString(this.getConfig().getString("mongoDB.connectionString"));
         MongoClientSettings settings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
             .build();
@@ -129,6 +130,14 @@ public class Qsky extends JavaPlugin {
             PluginCommand qskyrlCommand = this.getCommand("qskyrl");
             qskyrlCommand.setExecutor(new Qskyrl(this));
             qskyrlCommand.setTabCompleter(new Qskyrl(this));
+
+            //endregion
+
+            //region /qskyadv
+
+            PluginCommand qskyadvCommand = this.getCommand("qskyadv");
+            qskyadvCommand.setExecutor(new Qskyadv(this));
+            qskyadvCommand.setTabCompleter(new Qskyadv(this));
 
             //endregion
 

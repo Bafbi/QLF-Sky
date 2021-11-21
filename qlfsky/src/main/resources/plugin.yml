@@ -7,7 +7,8 @@ author: Bafbi#3144
 website: https://github.com/Bafbi
 descirption: "Plugin custom créé pour Qlf-Sky (Pour tout contact avec l'equipe de developpement, mp : Bafbi#3144)"
 
-softdepend: [LuckPerms]
+
+depend: [LuckPerms, CrazyAdvancementsAPI]
 
 commands:
     #DataBase / Local relative
@@ -57,6 +58,14 @@ commands:
         permission: qsky.qskyrl
         permission-message: Cette command n'est pas pour toi!
         usage: "§e§oUsage: /<command>"
+
+    qskyadv:
+        aliases: []
+        description: "debug des advancements"
+        permission: qsky.qskyadv
+        permission-message: Cette command n'est pas pour toi!
+        usage: "§e§oUsage: /<command>"
+
     bypass:
         aliases: []
         description: "permet de bypass les permissions d'une ile"

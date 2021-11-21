@@ -2,6 +2,9 @@ package fr.bafbi.qsky.listeners;
 
 import java.util.Date;
 
+import eu.endercentral.crazy_advancements.Advancement;
+import eu.endercentral.crazy_advancements.CrazyAdvancements;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -39,7 +42,7 @@ public class JoinLeaveEvent implements Listener {
 
         if (playerProfilDB.getPlaytime() == 0.0) {
             event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfilDB.countProfils() + 1))));
-            
+
             Bukkit.dispatchCommand(player, "spawn");
         }
         else event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));
@@ -48,6 +51,8 @@ public class JoinLeaveEvent implements Listener {
         playerProfilDB.setConnectionTime(new Date());
         playerProfilLocal.setMoney(playerProfilDB.getMoney());
         playerProfilLocal.setIslandInviteUUID("null");
+        main.advancementManager.addPlayer(player);
+        AdvancementManager.getAccessibleManager("main").addPlayer(player);
 
         if (!playerProfilDB.getPlayedServerVersion().contains(main.getServerVersion())) playerProfilDB.addPlayedServerVersion(main.getServerVersion());  
 

@@ -48,6 +48,12 @@
         <version>5.3</version>
         <scope>provided</scope>
     </dependency>
+      <dependency>
+          <groupId>eu.endercentral.crazy_advancements</groupId>
+          <artifactId>crazy-advancement-api</artifactId>
+          <version>1.14</version>
+          <scope>provided</scope>
+      </dependency>
   </dependencies>
 
   <build>

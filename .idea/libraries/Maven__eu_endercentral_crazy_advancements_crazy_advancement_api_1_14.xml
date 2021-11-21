@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: eu.endercentral.crazy_advancements:crazy-advancement-api:1.14">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/endercentral/crazy_advancements/crazy-advancement-api/1.14/crazy-advancement-api-1.14.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/endercentral/crazy_advancements/crazy-advancement-api/1.14/crazy-advancement-api-1.14-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/endercentral/crazy_advancements/crazy-advancement-api/1.14/crazy-advancement-api-1.14-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/eu/endercentral/crazy_advancements/crazy-advancement-api/1.14/crazy-advancement-api-1.14.jar!/" />
+    </SOURCES>
+  </library>
+</component>
