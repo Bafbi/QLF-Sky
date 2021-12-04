@@ -7,8 +7,10 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import eu.endercentral.crazy_advancements.Advancement;
+import eu.endercentral.crazy_advancements.NameKey;
 import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import fr.bafbi.qsky.advancements.QskyAdvancementsManager;
+import fr.bafbi.qsky.advancements.TutoAdvancements;
 import fr.bafbi.qsky.commands.*;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -44,7 +46,11 @@ public class Qsky extends JavaPlugin {
         plugin = this;
         this.guiConfig = new GuiConfig(this);
         this.luckPerms = getServer().getServicesManager().load(LuckPerms.class);
-        this.advancementManager = new AdvancementManager();
+        this.advancementManager = new AdvancementManager(new NameKey("qsky", "tuto"));
+
+        QskyAdvancementsManager aa = new QskyAdvancementsManager(advancementManager);
+        aa.registerAdvancement(TutoAdvancements.TESTROOT);
+        aa.registerAdvancement(TutoAdvancements.TESTCHILD);
 
 
         //region Save Files

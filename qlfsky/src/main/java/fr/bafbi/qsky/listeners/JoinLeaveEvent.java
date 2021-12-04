@@ -2,10 +2,16 @@ package fr.bafbi.qsky.listeners;
 
 import java.util.Date;
 
-import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.CrazyAdvancements;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazy_advancements.JSONMessage;
+import eu.endercentral.crazy_advancements.advancement.Advancement;
+import eu.endercentral.crazy_advancements.advancement.AdvancementDisplay;
+import eu.endercentral.crazy_advancements.advancement.ToastNotification;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.KeybindComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +23,8 @@ import fr.bafbi.qsky.Qsky;
 import fr.bafbi.qsky.utils.PlayerProfilDB;
 import fr.bafbi.qsky.utils.PlayerProfilLocal;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class JoinLeaveEvent implements Listener {
     
@@ -44,17 +52,35 @@ public class JoinLeaveEvent implements Listener {
             event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("firstConnection").replace("<player.name>", player.getName()).replace("<player.connection.rank>", Long.toString(playerProfilDB.countProfils() + 1))));
 
             Bukkit.dispatchCommand(player, "spawn");
+            new ToastNotification(Material.PUFFERFISH_BUCKET, "Bienvenue " + player.getName() + ", J'suis Bob le PufferFish", AdvancementDisplay.AdvancementFrame.CHALLENGE).send(player);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    BaseComponent component = new TextComponent("Je t'ai fait un tutoriel, appui sur [");
+                    component.addExtra(new KeybindComponent("key.advancements"));
+                    component.addExtra("]");
+                    new ToastNotification(Material.PUFFERFISH_BUCKET, new JSONMessage(component), AdvancementDisplay.AdvancementFrame.CHALLENGE).send(player);
+                }
+            }.runTaskLater(main, 40);
         }
-        else event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));
+        else {
+            event.joinMessage(GsonComponentSerializer.gson().deserialize(textComponent.getString("connection").replace("<player.name>", player.getName())));
+            new ToastNotification(Material.AXOLOTL_BUCKET, "Welcome back " + player.getName(), AdvancementDisplay.AdvancementFrame.CHALLENGE).send(player);
+        }
 
         playerProfilDB.setOnline(true);
         playerProfilDB.setConnectionTime(new Date());
         playerProfilLocal.setMoney(playerProfilDB.getMoney());
         playerProfilLocal.setIslandInviteUUID("null");
-        main.advancementManager.addPlayer(player);
-        AdvancementManager.getAccessibleManager("main").addPlayer(player);
 
-        if (!playerProfilDB.getPlayedServerVersion().contains(main.getServerVersion())) playerProfilDB.addPlayedServerVersion(main.getServerVersion());  
+        if (!playerProfilDB.getPlayedServerVersion().contains(main.getServerVersion())) playerProfilDB.addPlayedServerVersion(main.getServerVersion());
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                main.advancementManager.addPlayer(player);
+            }
+        }.runTaskLater(main, 40);
 
     }
 
@@ -72,6 +98,7 @@ public class JoinLeaveEvent implements Listener {
         playerProfilDB.update(playerProfilLocal.getMoney());
         playerProfilDB.setOnline(false);
         playerProfilLocal.setIslandInviteUUID("null");
+        main.advancementManager.removePlayer(player);
 
     }
 

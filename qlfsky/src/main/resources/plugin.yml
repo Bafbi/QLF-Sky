@@ -1,7 +1,7 @@
 main: fr.bafbi.qsky.Qsky
 name: Qsky
 version: 0.1
-api-version: 1.16
+api-version: 1.17
 database: true
 author: Bafbi#3144
 website: https://github.com/Bafbi
