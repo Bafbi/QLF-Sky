@@ -39,6 +39,8 @@ public class Qskyadv implements TabExecutor {
             main.advancementManager.grantAdvancement(player, adv);
         });
 
+        main.advancementManager.saveProgress(player);
+
 
         return false;
     }

@@ -10,7 +10,7 @@ import org.bukkit.Material;
 
 public class QskyAdvancementsManager {
 
-    private AdvancementManager manager;
+    private final AdvancementManager manager;
 
     public QskyAdvancementsManager(AdvancementManager manager) {
         this.manager = manager;
@@ -18,7 +18,7 @@ public class QskyAdvancementsManager {
 
     public void initPage() {}
 
-    public void registerAdvancement(TutoAdvancements pattern) {
+    public void registerAdvancement(CustomAdvancements pattern) {
 
         Advancement parent = null;
 

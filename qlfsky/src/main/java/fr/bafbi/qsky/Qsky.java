@@ -9,6 +9,7 @@ import com.mongodb.client.MongoDatabase;
 
 import eu.endercentral.crazy_advancements.NameKey;
 import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import fr.bafbi.qsky.advancements.CustomAdvancements;
 import fr.bafbi.qsky.advancements.QskyAdvancementsManager;
 import fr.bafbi.qsky.advancements.TutoAdvancements;
 import fr.bafbi.qsky.commands.*;
@@ -51,6 +52,7 @@ public class Qsky extends JavaPlugin {
         QskyAdvancementsManager aa = new QskyAdvancementsManager(advancementManager);
         aa.registerAdvancement(TutoAdvancements.TESTROOT);
         aa.registerAdvancement(TutoAdvancements.TESTCHILD);
+        aa.registerAdvancement(TutoAdvancements.STARTING);
 
 
         //region Save Files

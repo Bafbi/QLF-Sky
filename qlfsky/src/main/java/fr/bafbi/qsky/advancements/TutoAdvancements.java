@@ -5,10 +5,11 @@ import eu.endercentral.crazy_advancements.advancement.AdvancementDisplay;
 import eu.endercentral.crazy_advancements.advancement.AdvancementVisibility;
 import org.bukkit.Material;
 
-public enum TutoAdvancements {
+public enum TutoAdvancements implements CustomAdvancements {
 
     TESTROOT (Material.ARMOR_STAND, "My Custom Advancements", "With cool additions", AdvancementDisplay.AdvancementFrame.TASK, AdvancementVisibility.ALWAYS, "tuto", "root", null, 0, 0),
-    TESTCHILD (Material.CYAN_BED, "My Custom child Advancements", "With cool nice additions", AdvancementDisplay.AdvancementFrame.CHALLENGE, AdvancementVisibility.PARENT_GRANTED, "tuto", "child", TutoAdvancements.TESTROOT, 1, 0);
+    TESTCHILD (Material.CYAN_BED, "My Custom child Advancements", "With cool nice additions", AdvancementDisplay.AdvancementFrame.CHALLENGE, AdvancementVisibility.PARENT_GRANTED, "tuto", "child", TutoAdvancements.TESTROOT, 1, 0),
+    STARTING (Material.BLACK_CONCRETE_POWDER, "Hola", "With cool additions", AdvancementDisplay.AdvancementFrame.GOAL, AdvancementVisibility.ALWAYS, "tuto", "start", null, 0, 1);
 
 
     private Material icon;
@@ -35,42 +36,53 @@ public enum TutoAdvancements {
         this.y = y;
     }
 
+
+    @Override
     public Material getIcon() {
         return icon;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public AdvancementDisplay.AdvancementFrame getFrame() {
         return frame;
     }
 
+    @Override
     public AdvancementVisibility getVisibility() {
         return visibility;
     }
 
+    @Override
     public String getNameSpace() {
         return nameSpace;
     }
 
+    @Override
     public String getKey() {
         return key;
     }
 
+    @Override
     public TutoAdvancements getParentAdvancement() {
         return parentAdvancement;
     }
 
+    @Override
     public float getX() {
         return x;
     }
 
+    @Override
     public float getY() {
         return y;
     }

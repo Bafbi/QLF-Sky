@@ -6,8 +6,8 @@ import org.bukkit.Material;
 
 public class AdvancementsPages {
 
-    private Material icon;
-    private String title;
+    public Material icon;
+    String title;
     private String description;
     private AdvancementDisplay.AdvancementFrame frame;
     private boolean showToast;
@@ -64,10 +64,5 @@ public class AdvancementsPages {
         return key;
     }
 
-    enum Tuto {
-
-        //TESTROOT (Material.ARMOR_STAND, "My Custom Advancements", "With cool additions", AdvancementDisplay.AdvancementFrame.TASK, false, false, AdvancementVisibility.HIDDEN, "tuto", "root");
-
-    }
 
 }

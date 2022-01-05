@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-sync</artifactId>
-      <version>4.3.2</version>
+      <version>4.4.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -80,6 +80,14 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>org.mongodb:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.MF</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>C:\Users\bafbi\Documents\Qsky_dev_serv_1.16.5\plugins\Qsky.jar</outputFile>
                         </configuration>
